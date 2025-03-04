@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:16
+    container_name: postgres_db
+    env_file: .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build:
+        context: ./server
+    container_name: django_web
+    env_file: .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    volumes:
+      - ./server/src:/app
+
+  frontend:
+      build:
+        context: ./frontend
+      ports:
+        - "3000:3000"
+      stdin_open: true  # Для корректной работы React в Docker
+      tty: true
+      depends_on:
+        - web
+
+volumes:
+  postgres_data:
