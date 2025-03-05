@@ -20,13 +20,16 @@ class DocumentTypeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class DocumentSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-    document_type = DocumentTypeSerializer()
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    document_type = serializers.PrimaryKeyRelatedField(queryset=DocumentType.objects.all())
 
     class Meta:
         model = Document
         fields = '__all__'
 
+
+# TODO:
+# Логи сделать программно и автоматически
 class DocumentLogSerializer(serializers.ModelSerializer):
     document = DocumentSerializer()
     user = UserSerializer()
