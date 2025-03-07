@@ -6,10 +6,10 @@
 .pnp.js
 
 # testing
-/frontend/coverage
+./frontend/coverage
 
 # production
-/frontend/build
+./frontend/build
 
 # misc
 .DS_Store
@@ -62,9 +62,6 @@ docker-compose.override.yml
 
 # Windows specific files
 Thumbs.db
-
-# frontend directory (if you don't want to track it)
-frontend/
 
 # rqs file
 rqs
