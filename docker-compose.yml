@@ -22,15 +22,15 @@ services:
     volumes:
       - ./server/src:/app
 
-  frontend:
-      build:
-        context: ./frontend
-      ports:
-        - "3000:3000"
-      stdin_open: true  # Для корректной работы React в Docker
-      tty: true
-      depends_on:
-        - web
+  # frontend:
+  #     build:
+  #       context: ./frontend
+  #     ports:
+  #       - "3000:3000"
+  #     stdin_open: true  # Для корректной работы React в Docker
+  #     tty: true
+  #     depends_on:
+  #       - web
 
 volumes:
   postgres_data:

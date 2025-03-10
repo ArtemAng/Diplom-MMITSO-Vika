@@ -28,18 +28,25 @@ class DocumentType(models.Model):
         return self.name
 
 
+# class Document(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="documents")
+#     document_type = models.ForeignKey(DocumentType, on_delete=models.CASCADE)
+#     file_path = models.CharField(max_length=255)
+#     issue_date = models.DateField()
+#     expiry_date = models.DateField(null=True, blank=True)
+#     uploaded_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+
+#     def __str__(self):
+#         return f"{self.user.username} - {self.document_type.name}"
+
 class Document(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="documents")
-    document_type = models.ForeignKey(DocumentType, on_delete=models.CASCADE)
-    file_path = models.CharField(max_length=255)
-    issue_date = models.DateField()
-    expiry_date = models.DateField(null=True, blank=True)
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username} - {self.document_type.name}"
-
+        return self.title
 
 class DocumentLog(models.Model):
     document = models.ForeignKey(Document, on_delete=models.CASCADE, related_name="logs")

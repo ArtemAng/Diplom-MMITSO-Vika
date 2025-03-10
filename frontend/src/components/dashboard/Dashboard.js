@@ -8,24 +8,10 @@ import AppNavbar from './components/AppNavbar';
 import Header from './components/Header';
 import MainGrid from './components/MainGrid';
 import SideMenu from './components/SideMenu';
-import AppTheme from '../../shared-theme/AppTheme';
-import {
-  chartsCustomizations,
-  dataGridCustomizations,
-  datePickersCustomizations,
-  treeViewCustomizations,
-} from './theme/customizations';
 
-const xThemeComponents = {
-  ...chartsCustomizations,
-  ...dataGridCustomizations,
-  ...datePickersCustomizations,
-  ...treeViewCustomizations,
-};
-
-export default function Dashboard(props) {
+export default function Dashboard() {
   return (
-    <AppTheme {...props} themeComponents={xThemeComponents}>
+    <>
       <CssBaseline enableColorScheme />
       <Box sx={{ display: 'flex' }}>
         <SideMenu />
@@ -55,6 +41,6 @@ export default function Dashboard(props) {
           </Stack>
         </Box>
       </Box>
-    </AppTheme>
+    </>
   );
 }

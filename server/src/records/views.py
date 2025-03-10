@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from .models import Role, Document, DocumentType, DocumentLog, Notification, User
 from .serializers import RoleSerializer, DocumentSerializer, DocumentTypeSerializer, DocumentLogSerializer, NotificationSerializer, UserSerializer
+from django.shortcuts import render
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -25,3 +26,10 @@ class DocumentLogViewSet(viewsets.ModelViewSet):
 class NotificationViewSet(viewsets.ModelViewSet):
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
+
+def home(request):
+    return render(request, 'records/home.html')
+    
+def document_list(request):
+    documents = Document.objects.all()
+    return render(request, 'records/document_list.html', {'documents': documents})
