@@ -55,4 +55,5 @@ def sign_up_view(request):
 
 @login_required
 def profile_view(request):
-    return render(request, 'records/profile.html')
+    documents = Document.objects.filter(user=request.user)
+    return render(request, 'records/profile.html', {'documents': documents})
