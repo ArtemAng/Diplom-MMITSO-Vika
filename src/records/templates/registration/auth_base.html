@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Авторизация{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+</head>
+<body>
+    <div class="auth-container">
+        <h2>{% block heading %}Вход в систему{% endblock %}</h2>
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

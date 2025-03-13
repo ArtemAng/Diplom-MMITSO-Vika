@@ -1,0 +1,31 @@
+/* body{
+    background-color: green;
+} */
+
+
+.profile-container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.profile-container h2 {
+    margin-bottom: 20px;
+}
+
+.btn-danger {
+    display: inline-block;
+    padding: 10px 15px;
+    color: white;
+    background-color: red;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.btn-danger:hover {
+    background-color: darkred;
+}

@@ -1,0 +1,61 @@
+/* Общие стили */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Контейнер для форм */
+.auth-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* Заголовок */
+.auth-container h2 {
+    margin-bottom: 1rem;
+}
+
+/* Поля ввода */
+.auth-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Кнопка */
+.auth-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.auth-container button:hover {
+    background-color: #0056b3;
+}
+
+/* Ошибки формы */
+.alert {
+    background: #ffdddd;
+    color: red;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+}

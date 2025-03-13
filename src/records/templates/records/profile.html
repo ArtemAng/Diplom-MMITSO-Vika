@@ -1,0 +1,18 @@
+{% extends 'records/base.html' %}
+{% load static %}
+
+{% block title %}Мой профиль{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <h2>Привет, {{ user.username }}!</h2>
+    
+    <p><strong>Имя пользователя:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <form method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Выйти</button>
+  </form>
+    {% comment %} <a href="{% url 'logout' %}" class="btn btn-danger">Выйти</a> {% endcomment %}
+</div>
+{% endblock %}

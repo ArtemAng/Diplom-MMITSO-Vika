@@ -11,8 +11,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   web:
-    build:
-        context: ./server
+    build: .
     container_name: django_web
     env_file: .env
     ports:
@@ -20,17 +19,7 @@ services:
     depends_on:
       - db
     volumes:
-      - ./server/src:/app
-
-  # frontend:
-  #     build:
-  #       context: ./frontend
-  #     ports:
-  #       - "3000:3000"
-  #     stdin_open: true  # Для корректной работы React в Docker
-  #     tty: true
-  #     depends_on:
-  #       - web
+      - ./src:/app
 
 volumes:
   postgres_data:
