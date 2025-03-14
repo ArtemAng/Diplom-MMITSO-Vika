@@ -1,5 +1,8 @@
+import os
+import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.core.files.storage import default_storage
 
 # Роли пользователей
 class Role(models.Model):
@@ -56,6 +59,15 @@ class Document(models.Model):
     expiry_date = models.DateField(null=True, blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        user_folder = os.path.join(str(self.user.username))
+        
+        file_extension = os.path.splitext(self.file_path.name)[1]
+        unique_name = f"{uuid.uuid4()}{file_extension}"
+        self.file_path.name = os.path.join(user_folder, unique_name)
+        
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.user.username} - {self.document_type.name}"
