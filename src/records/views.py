@@ -79,16 +79,30 @@ def delete_document(request, document_id):
     document = get_object_or_404(Document, id=document_id, user=request.user)
     if request.method == 'POST':
         document.delete()
-        return redirect('profile')  # Перенаправление на профиль или другую страницу
+        return redirect('profile')
     return render(request, 'confirm_delete.html', {'document': document})
 
 @login_required
 def download_document(request, document_id):
     try:
         document = Document.objects.get(id=document_id)
-        file_path = document.file_path.path  # Получаем полный путь к файлу
+        file_path = document.file_path.path 
         response = FileResponse(open(file_path, 'rb'), as_attachment=True)
         return response
 
     except Document.DoesNotExist:
         raise Http404("Документ не найден.")
+
+@login_required
+def edit_document(request, document_id):
+    document = get_object_or_404(Document, id=document_id)
+    
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES, instance=document)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = DocumentForm(instance=document)
+
+    return render(request, 'records/edit_document.html', {'form': form, 'document': document})

@@ -23,7 +23,7 @@
                     <td>{{ document.uploaded_at }}</td>
                     <td class="d-flex justify-content-between">
                         <a href="{% url 'download_document' document.id %}" class="btn btn-primary btn-sm"><i class="fas fa-download"></i></a>
-                        <a href="\{% url 'edit_document' document.id %\}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                        <a href="{% url 'edit_document' document.id %}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
                         <form action="{% url 'delete_document' document.id %}" method="post" style="display:inline;">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
