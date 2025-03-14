@@ -1,8 +1,8 @@
 from rest_framework import viewsets
 from .models import Role, User, DocumentType, Document, DocumentLog, Notification
 from .serializers import RoleSerializer, UserSerializer, DocumentTypeSerializer, DocumentSerializer, DocumentLogSerializer, NotificationSerializer
-from django.shortcuts import render, redirect
-from .forms import LoginForm, RegistrationForm
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import LoginForm, RegistrationForm, DocumentForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
@@ -57,3 +57,26 @@ def sign_up_view(request):
 def profile_view(request):
     documents = Document.objects.filter(user=request.user)
     return render(request, 'records/profile.html', {'documents': documents})
+
+@login_required
+def add_document(request):
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES)  
+        if form.is_valid():
+            document = form.save(commit=False)
+            document.user = request.user  
+            document.file_path = request.FILES['file_path']  
+            document.save()
+            return redirect('profile')
+    else:
+        form = DocumentForm()
+    
+    return render(request, 'records/add_document.html', {'form': form})
+
+@login_required
+def delete_document(request, document_id):
+    document = get_object_or_404(Document, id=document_id, user=request.user)
+    if request.method == 'POST':
+        document.delete()
+        return redirect('profile')  # Перенаправление на профиль или другую страницу
+    return render(request, 'confirm_delete.html', {'document': document})

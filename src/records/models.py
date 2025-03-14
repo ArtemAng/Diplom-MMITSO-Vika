@@ -51,7 +51,7 @@ class DocumentType(models.Model):
 class Document(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="documents")
     document_type = models.ForeignKey(DocumentType, on_delete=models.CASCADE)
-    file_path = models.CharField(max_length=255)
+    file_path = models.FileField(upload_to='documents/')
     issue_date = models.DateField()
     expiry_date = models.DateField(null=True, blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)

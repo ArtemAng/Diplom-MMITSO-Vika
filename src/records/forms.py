@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from .models import User
+from .models import User, Document
 from django import forms
 
 class LoginForm(AuthenticationForm):
@@ -19,3 +19,8 @@ class RegistrationForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+class DocumentForm(forms.ModelForm):
+    class Meta:
+        model = Document
+        fields = ['document_type', 'issue_date', 'expiry_date'] 

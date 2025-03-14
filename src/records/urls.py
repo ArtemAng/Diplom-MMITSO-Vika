@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import RoleViewSet, UserViewSet, DocumentTypeViewSet, DocumentViewSet, DocumentLogViewSet, NotificationViewSet, login_view, sign_up_view, profile_view
+from .views import RoleViewSet, UserViewSet, DocumentTypeViewSet, DocumentViewSet, DocumentLogViewSet, NotificationViewSet, login_view, sign_up_view, delete_document, profile_view, add_document
 from django.contrib.auth import views as auth_views
 
 router = DefaultRouter()
@@ -17,5 +17,7 @@ urlpatterns = [
     path('signup/', sign_up_view, name='signup'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'), # Тут надо чекнуть не забыл ли 4о
     path('profile/', profile_view, name='profile'),
+    path('add_document/', add_document, name='add_document'),
+    path('delete_document/<int:document_id>/', delete_document, name='delete_document'),
 
 ]

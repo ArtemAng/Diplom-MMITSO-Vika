@@ -24,7 +24,7 @@
                     <td class="d-flex justify-content-between">
                         <a href="{{ document.file_path }}" class="btn btn-primary btn-sm"><i class="fas fa-download"></i></a>
                         <a href="\{% url 'edit_document' document.id %\}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
-                        <form action="\{% url 'delete_document' document.id %\}" method="post" style="display:inline;">
+                        <form action="{% url 'delete_document' document.id %}" method="post" style="display:inline;">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
                         </form>
@@ -39,7 +39,7 @@
         </table>
     </div>
     <div class="text-right mt-3">
-        <a href="" class="btn btn-success">Добавить документ</a>
+        <a href="{% url 'add_document' %}" class="btn btn-success">Добавить документ</a>
     </div>
 </div>
 {% endblock %}
