@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import RoleViewSet, UserViewSet, DocumentTypeViewSet, DocumentViewSet, DocumentLogViewSet, NotificationViewSet, login_view, sign_up_view, delete_document, profile_view, add_document
+from .views import RoleViewSet, UserViewSet, DocumentTypeViewSet, DocumentViewSet, DocumentLogViewSet, NotificationViewSet, download_document, login_view, sign_up_view, delete_document, profile_view, add_document
 from django.contrib.auth import views as auth_views
 
 router = DefaultRouter()
@@ -19,5 +19,6 @@ urlpatterns = [
     path('profile/', profile_view, name='profile'),
     path('add_document/', add_document, name='add_document'),
     path('delete_document/<int:document_id>/', delete_document, name='delete_document'),
+    path('download/<int:document_id>/', download_document, name='download_document'),
 
 ]

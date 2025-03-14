@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import LoginForm, RegistrationForm, DocumentForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.http import FileResponse, Http404
 
 class RoleViewSet(viewsets.ModelViewSet):
     queryset = Role.objects.all()
@@ -80,3 +81,14 @@ def delete_document(request, document_id):
         document.delete()
         return redirect('profile')  # Перенаправление на профиль или другую страницу
     return render(request, 'confirm_delete.html', {'document': document})
+
+@login_required
+def download_document(request, document_id):
+    try:
+        document = Document.objects.get(id=document_id)
+        file_path = document.file_path.path  # Получаем полный путь к файлу
+        response = FileResponse(open(file_path, 'rb'), as_attachment=True)
+        return response
+
+    except Document.DoesNotExist:
+        raise Http404("Документ не найден.")
