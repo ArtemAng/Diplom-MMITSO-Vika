@@ -12,7 +12,7 @@ router.register(r'document_logs', DocumentLogViewSet)
 router.register(r'notifications', NotificationViewSet)
 
 urlpatterns = [
-    path('api/', include(router.urls)),
+    # path('api/', include(router.urls)),s
     path('login/', login_view, name='login'),
     path('signup/', sign_up_view, name='signup'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'), # Тут надо чекнуть не забыл ли 4о
