@@ -6,6 +6,13 @@ from .forms import LoginForm, RegistrationForm, DocumentForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import FileResponse, Http404
+from .decorators import admin_required
+from django.contrib import messages
+
+def home_view(request):
+    if request.user.is_authenticated:
+        return redirect('profile')
+    return redirect('login')
 
 class RoleViewSet(viewsets.ModelViewSet):
     queryset = Role.objects.all()
@@ -79,8 +86,9 @@ def delete_document(request, document_id):
     document = get_object_or_404(Document, id=document_id, user=request.user)
     if request.method == 'POST':
         document.delete()
+        messages.success(request, 'Документ успешно удален.')
         return redirect('profile')
-    return render(request, 'confirm_delete.html', {'document': document})
+    return render(request, 'records/confirm_delete.html', {'document': document})
 
 @login_required
 def download_document(request, document_id):
@@ -106,3 +114,49 @@ def edit_document(request, document_id):
         form = DocumentForm(instance=document)
 
     return render(request, 'records/edit_document.html', {'form': form, 'document': document})
+
+@login_required
+@admin_required
+def admin_dashboard(request):
+    users = User.objects.all()
+    documents = Document.objects.all()
+    document_types = DocumentType.objects.all()
+    return render(request, 'records/admin_dashboard.html', {
+        'users': users,
+        'documents': documents,
+        'document_types': document_types
+    })
+
+@login_required
+@admin_required
+def manage_users(request):
+    users = User.objects.all()
+    return render(request, 'records/manage_users.html', {'users': users})
+
+@login_required
+@admin_required
+def manage_document_types(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        if name:
+            DocumentType.objects.create(name=name)
+    document_types = DocumentType.objects.all()
+    return render(request, 'records/manage_document_types.html', {'document_types': document_types})
+
+@login_required
+@admin_required
+def delete_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    if request.method == 'POST':
+        user.delete()
+        return redirect('manage_users')
+    return render(request, 'records/confirm_delete_user.html', {'user': user})
+
+@login_required
+@admin_required
+def delete_document_type(request, type_id):
+    doc_type = get_object_or_404(DocumentType, id=type_id)
+    if request.method == 'POST':
+        doc_type.delete()
+        return redirect('manage_document_types')
+    return render(request, 'records/confirm_delete_document_type.html', {'doc_type': doc_type})

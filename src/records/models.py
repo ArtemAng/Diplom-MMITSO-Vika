@@ -41,7 +41,6 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
-
 # Типы документов
 class DocumentType(models.Model):
     name = models.CharField(max_length=100, unique=True)

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Панель администратора</h2>
+    
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Пользователи</h5>
+                    <p class="card-text">Всего пользователей: {{ users.count }}</p>
+                    <a href="{% url 'manage_users' %}" class="btn btn-primary">Управление пользователями</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Документы</h5>
+                    <p class="card-text">Всего документов: {{ documents.count }}</p>
+                    <a href="#" class="btn btn-primary">Просмотр документов</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Типы документов</h5>
+                    <p class="card-text">Всего типов: {{ document_types.count }}</p>
+                    <a href="{% url 'manage_document_types' %}" class="btn btn-primary">Управление типами</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
