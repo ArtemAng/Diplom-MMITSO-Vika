@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import FileResponse, Http404
 from .decorators import admin_required
 from django.contrib import messages
+from django.core.paginator import Paginator
+from django.db.models import Q
 
 def home_view(request):
     if request.user.is_authenticated:
@@ -160,3 +162,62 @@ def delete_document_type(request, type_id):
         doc_type.delete()
         return redirect('manage_document_types')
     return render(request, 'records/confirm_delete_document_type.html', {'doc_type': doc_type})
+
+@login_required
+@admin_required
+def admin_documents(request):
+    # Получаем параметры фильтрации и поиска
+    search_query = request.GET.get('search', '')
+    user_filter = request.GET.get('user', '')
+    doc_type_filter = request.GET.get('doc_type', '')
+    
+    # Базовый queryset
+    documents = Document.objects.all().select_related('user', 'document_type')
+    
+    # Применяем фильтры
+    if search_query:
+        documents = documents.filter(
+            Q(user__username__icontains=search_query) |
+            Q(document_type__name__icontains=search_query)
+        )
+    
+    if user_filter:
+        documents = documents.filter(user_id=user_filter)
+    
+    if doc_type_filter:
+        documents = documents.filter(document_type_id=doc_type_filter)
+    
+    # Сортируем по дате загрузки (новые сверху)
+    documents = documents.order_by('-uploaded_at')
+    
+    # Пагинация
+    paginator = Paginator(documents, 10)  # 10 документов на страницу
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    # Получаем списки для фильтров
+    users = User.objects.all()
+    document_types = DocumentType.objects.all()
+    
+    context = {
+        'documents': page_obj,
+        'users': users,
+        'document_types': document_types,
+        'search_query': search_query,
+        'selected_user': user_filter,
+        'selected_doc_type': doc_type_filter,
+        'is_paginated': True,
+        'page_obj': page_obj,
+    }
+    
+    return render(request, 'records/admin_documents.html', context)
+
+@login_required
+@admin_required
+def admin_delete_document(request, document_id):
+    document = get_object_or_404(Document, id=document_id)
+    if request.method == 'POST':
+        document.delete()
+        messages.success(request, 'Документ успешно удален.')
+        return redirect('admin_documents')
+    return render(request, 'records/confirm_delete.html', {'document': document})

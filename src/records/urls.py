@@ -5,7 +5,7 @@ from .views import (
     DocumentLogViewSet, NotificationViewSet, download_document, edit_document, 
     login_view, sign_up_view, delete_document, profile_view, add_document,
     admin_dashboard, manage_users, manage_document_types, delete_user, delete_document_type,
-    home_view
+    home_view, admin_documents, admin_delete_document
 )
 from django.contrib.auth import views as auth_views
 
@@ -35,4 +35,6 @@ urlpatterns = [
     path('admin-panel/users/delete/<int:user_id>/', delete_user, name='delete_user'),
     path('admin-panel/document-types/', manage_document_types, name='manage_document_types'),
     path('admin-panel/document-types/delete/<int:type_id>/', delete_document_type, name='delete_document_type'),
+    path('admin-panel/documents/', admin_documents, name='admin_documents'),
+    path('admin-panel/documents/delete/<int:document_id>/', admin_delete_document, name='admin_delete_document'),
 ]
