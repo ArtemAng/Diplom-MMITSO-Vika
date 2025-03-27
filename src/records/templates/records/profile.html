@@ -32,7 +32,9 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Ваши документы</h5>
-                    <a href="{% url 'add_document' %}" class="btn btn-success mb-3">Добавить документ</a>
+                    <a href="{% url 'add_document' %}" class="btn btn-success mb-3">
+                        <i class="fas fa-plus me-2"></i>Добавить документ
+                    </a>
                     
                     {% if documents %}
                     <div class="table-responsive">
@@ -52,9 +54,9 @@
                                     <td>{{ document.issue_date }}</td>
                                     <td>{{ document.expiry_date|default:"Не указан" }}</td>
                                     <td>
-                                        <a href="{% url 'download_document' document.id %}" class="btn btn-sm btn-primary">Скачать</a>
-                                        <a href="{% url 'edit_document' document.id %}" class="btn btn-sm btn-warning">Редактировать</a>
-                                        <a href="{% url 'delete_document' document.id %}" class="btn btn-sm btn-danger">Удалить</a>
+                                        <a href="{% url 'download_document' document.id %}" class="btn btn-sm btn-primary"><i class="fas fa-download"></i></a>
+                                        <a href="{% url 'edit_document' document.id %}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                        <a href="{% url 'delete_document' document.id %}" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
                                     </td>
                                 </tr>
                                 {% endfor %}
