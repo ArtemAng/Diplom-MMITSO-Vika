@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <h1 class="display-1">404</h1>
+            <h2 class="mb-4">Страница не найдена</h2>
+            <p class="lead mb-4">Извините, запрашиваемая страница не существует.</p>
+            <a href="{% url 'profile' %}" class="btn btn-primary">
+                <i class="fas fa-home me-2"></i>Вернуться в профиль
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %} 

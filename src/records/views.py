@@ -10,6 +10,12 @@ from .decorators import admin_required
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.http import Http404
+
+def handler404(request, exception):
+    if request.user.is_authenticated:
+        return redirect('profile')
+    return redirect('login')
 
 def home_view(request):
     if request.user.is_authenticated:
@@ -215,9 +221,13 @@ def admin_documents(request):
 @login_required
 @admin_required
 def admin_delete_document(request, document_id):
-    document = get_object_or_404(Document, id=document_id)
-    if request.method == 'POST':
-        document.delete()
-        messages.success(request, 'Документ успешно удален.')
+    try:
+        document = Document.objects.get(id=document_id)
+        if request.method == 'POST':
+            document.delete()
+            messages.success(request, 'Документ успешно удален.')
+            return redirect('admin_documents')
+        return render(request, 'records/confirm_admin_delete.html', {'document': document})
+    except Document.DoesNotExist:
+        messages.error(request, 'Документ не найден или уже удален.')
         return redirect('admin_documents')
-    return render(request, 'records/confirm_delete.html', {'document': document})
