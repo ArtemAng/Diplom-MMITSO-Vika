@@ -41,6 +41,7 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
+                                    <th>Название документа</th>
                                     <th>Тип документа</th>
                                     <th>Дата выдачи</th>
                                     <th>Срок действия</th>
@@ -50,6 +51,7 @@
                             <tbody>
                                 {% for document in documents %}
                                 <tr>
+                                    <td>{{ document.file_path.name|cut:"documents/"|cut:user.username|cut:"/" }}</td>
                                     <td>{{ document.document_type.name }}</td>
                                     <td>{{ document.issue_date }}</td>
                                     <td>{{ document.expiry_date|default:"Не указан" }}</td>

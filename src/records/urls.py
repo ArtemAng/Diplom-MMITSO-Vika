@@ -5,7 +5,7 @@ from .views import (
     DocumentLogViewSet, NotificationViewSet, download_document, edit_document, 
     login_view, signup_view, delete_document, profile_view, add_document,
     admin_dashboard, admin_documents, admin_delete_document, logout_view,
-    admin_users, admin_delete_user, home_view
+    admin_users, admin_delete_user, home_view, manage_document_types, toggle_admin
 )
 from django.contrib.auth import views as auth_views
 
@@ -35,4 +35,6 @@ urlpatterns = [
     path('admin-panel/documents/delete/<int:document_id>/', admin_delete_document, name='admin_delete_document'),
     path('admin-panel/users/', admin_users, name='admin_users'),
     path('admin-panel/users/<int:user_id>/delete/', admin_delete_user, name='admin_delete_user'),
+    path('manage-document-types/', manage_document_types, name='manage_document_types'),
+    path('toggle-admin/<int:user_id>/', toggle_admin, name='toggle_admin'),
 ]

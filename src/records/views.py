@@ -5,7 +5,7 @@ from .serializers import RoleSerializer, UserSerializer, DocumentTypeSerializer,
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import LoginForm, SignupForm, DocumentForm
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import FileResponse, Http404
 from .decorators import admin_required
 from django.contrib import messages
@@ -285,6 +285,22 @@ def admin_delete_user(request, user_id):
     except User.DoesNotExist:
         messages.error(request, 'Пользователь не найден или уже удален.')
         return redirect('admin_users')
+
+@login_required
+@user_passes_test(lambda u: u.is_staff)
+def toggle_admin(request, user_id):
+    if request.method == 'POST':
+        try:
+            user = User.objects.get(id=user_id)
+            if user != request.user:  # Предотвращаем отзыв прав у самого себя
+                user.is_staff = not user.is_staff
+                user.save()
+                messages.success(request, f'Права администратора {"предоставлены" if user.is_staff else "отозваны"} у пользователя {user.username}')
+            else:
+                messages.error(request, 'Вы не можете изменить свои собственные права администратора')
+        except User.DoesNotExist:
+            messages.error(request, 'Пользователь не найден')
+    return redirect('admin_users')
 
 def logout_view(request):
     logout(request)
