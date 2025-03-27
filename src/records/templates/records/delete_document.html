@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Удаление документа{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">Подтверждение удаления</h4>
+                </div>
+                <div class="card-body">
+                    <p>Вы уверены, что хотите удалить документ "{{ document.title }}"?</p>
+                    <p class="text-muted">Это действие нельзя отменить.</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'profile' %}" class="btn btn-outline-secondary">Отмена</a>
+                            <button type="submit" class="btn btn-danger">Удалить</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

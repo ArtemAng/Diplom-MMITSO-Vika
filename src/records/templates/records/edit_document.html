@@ -1,11 +1,91 @@
-{% extends 'records/base.html' %}
+{% extends 'base.html' %}
+
+{% block title %}Редактирование документа{% endblock %}
 
 {% block content %}
-    <h1>Редактировать документ</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Сохранить изменения</button>
-    </form>
-    <a href="{% url 'profile' %}">Отменить</a>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="card-title mb-0">Редактирование документа</h2>
+                        <a href="{% url 'profile' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Назад к профилю
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            {% if field.name in 'issue_date,expiry_date' %}
+                                {% if field.name == 'issue_date' %}
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                                <div class="input-group">
+                                                    {{ field }}
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-calendar"></i>
+                                                    </span>
+                                                </div>
+                                                {% if field.errors %}
+                                                <div class="alert alert-danger mt-2">
+                                                    {{ field.errors }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                {% else %}
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                                <div class="input-group">
+                                                    {{ field }}
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-calendar"></i>
+                                                    </span>
+                                                </div>
+                                                {% if field.errors %}
+                                                <div class="alert alert-danger mt-2">
+                                                    {{ field.errors }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                <div class="mb-3">
+                                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                    <div class="input-group">
+                                        {{ field }}
+                                    </div>
+                                    {% if field.errors %}
+                                    <div class="alert alert-danger mt-2">
+                                        {{ field.errors }}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        <div class="d-flex justify-content-between">
+                            <div class="col-md-4">
+                                <button type="submit" class="btn w-100 btn-primary">Сохранить изменения</button>
+                            </div>
+                            <div class="col-md-2">
+                                <a href="{% url 'profile' %}" class="btn w-100 btn-outline-secondary">Отмена</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

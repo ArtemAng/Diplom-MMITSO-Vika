@@ -131,16 +131,30 @@ def download_document(request, document_id):
 
 @login_required
 def edit_document(request, document_id):
-    document = get_object_or_404(Document, id=document_id)
+    document = get_object_or_404(Document, id=document_id, user=request.user)
     
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES, instance=document)
         if form.is_valid():
-            form.save()
+            updated_document = form.save()
+            
+            # Создаем запись в логе
+            DocumentLog.objects.create(
+                document=updated_document,
+                user=request.user,
+                action='edit',
+                changes={
+                    'document_type': str(updated_document.document_type),
+                    'issue_date': updated_document.issue_date.strftime('%Y-%m-%d'),
+                    'expiry_date': updated_document.expiry_date.strftime('%Y-%m-%d') if updated_document.expiry_date else None,
+                }
+            )
+            
+            messages.success(request, 'Документ успешно обновлен.')
             return redirect('profile')
     else:
         form = DocumentForm(instance=document)
-
+    
     return render(request, 'records/edit_document.html', {'form': form, 'document': document})
 
 @login_required
