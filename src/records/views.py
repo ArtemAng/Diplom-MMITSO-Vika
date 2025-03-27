@@ -1,8 +1,9 @@
 from rest_framework import viewsets
-from .models import Role, User, DocumentType, Document, DocumentLog, Notification
+from django.contrib.auth import get_user_model
+from .models import Role, DocumentType, Document, DocumentLog, Notification
 from .serializers import RoleSerializer, UserSerializer, DocumentTypeSerializer, DocumentSerializer, DocumentLogSerializer, NotificationSerializer
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import LoginForm, RegistrationForm, DocumentForm
+from .forms import LoginForm, SignupForm, DocumentForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import FileResponse, Http404
@@ -10,7 +11,8 @@ from .decorators import admin_required
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import Http404
+
+User = get_user_model()
 
 def handler404(request, exception):
     if request.user.is_authenticated:
@@ -48,26 +50,44 @@ class NotificationViewSet(viewsets.ModelViewSet):
 
 def login_view(request):
     if request.method == 'POST':
-        form = LoginForm(data=request.POST)
+        form = LoginForm(request.POST)
         if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect('profile') 
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('profile')
+            else:
+                messages.error(request, 'Неверное имя пользователя или пароль.')
     else:
         form = LoginForm()
-    
-    return render(request, 'registration/login.html', {'form': form})
+    return render(request, 'records/login.html', {'form': form})
 
-def sign_up_view(request):
-    if request.method == "POST":
-        form = RegistrationForm(request.POST)
+def signup_view(request):
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user) 
-            return redirect("profile")
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            password1 = form.cleaned_data['password1']
+            password2 = form.cleaned_data['password2']
+            
+            if password1 != password2:
+                messages.error(request, 'Пароли не совпадают.')
+                return render(request, 'records/signup.html', {'form': form})
+            
+            if User.objects.filter(username=username).exists():
+                messages.error(request, 'Пользователь с таким именем уже существует.')
+                return render(request, 'records/signup.html', {'form': form})
+            
+            user = User.objects.create_user(username=username, email=email, password=password1)
+            login(request, user)
+            messages.success(request, 'Регистрация успешно завершена!')
+            return redirect('profile')
     else:
-        form = RegistrationForm()
-    return render(request, "registration/signup.html", {"form": form})
+        form = SignupForm()
+    return render(request, 'records/signup.html', {'form': form})
 
 @login_required
 def profile_view(request):
@@ -231,3 +251,28 @@ def admin_delete_document(request, document_id):
     except Document.DoesNotExist:
         messages.error(request, 'Документ не найден или уже удален.')
         return redirect('admin_documents')
+
+@login_required
+@admin_required
+def admin_users(request):
+    users = User.objects.all()
+    return render(request, 'records/admin_users.html', {'users': users})
+
+@login_required
+@admin_required
+def admin_delete_user(request, user_id):
+    try:
+        user = User.objects.get(id=user_id)
+        if request.method == 'POST':
+            user.delete()
+            messages.success(request, 'Пользователь успешно удален.')
+            return redirect('admin_users')
+        return render(request, 'records/confirm_admin_delete_user.html', {'user': user})
+    except User.DoesNotExist:
+        messages.error(request, 'Пользователь не найден или уже удален.')
+        return redirect('admin_users')
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, 'Вы успешно вышли из системы.')
+    return redirect('login')

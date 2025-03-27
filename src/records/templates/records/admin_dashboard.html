@@ -1,36 +1,39 @@
 {% extends 'base.html' %}
 
+{% block title %}Панель администратора{% endblock %}
+
 {% block content %}
 <div class="container mt-4">
-    <h2>Панель администратора</h2>
-    
-    <div class="row mt-4">
-        <div class="col-md-4">
-            <div class="card">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
                 <div class="card-body">
-                    <h5 class="card-title">Пользователи</h5>
-                    <p class="card-text">Всего пользователей: {{ users.count }}</p>
-                    <a href="{% url 'manage_users' %}" class="btn btn-primary">Управление пользователями</a>
+                    <h2 class="card-title mb-0">Панель администратора</h2>
                 </div>
             </div>
-        </div>
-        
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Документы</h5>
-                    <p class="card-text">Всего документов: {{ documents.count }}</p>
-                    <a href="{% url 'admin_documents' %}" class="btn btn-primary">Просмотр документов</a>
+
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Управление пользователями</h5>
+                            <p class="card-text">Управление пользователями системы, их ролями и правами.</p>
+                            <a href="{% url 'admin_users' %}" class="btn btn-primary">
+                                <i class="fas fa-users me-2"></i>Перейти
+                            </a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Типы документов</h5>
-                    <p class="card-text">Всего типов: {{ document_types.count }}</p>
-                    <a href="{% url 'manage_document_types' %}" class="btn btn-primary">Управление типами</a>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Управление документами</h5>
+                            <p class="card-text">Просмотр и управление всеми документами в системе.</p>
+                            <a href="{% url 'admin_documents' %}" class="btn btn-primary">
+                                <i class="fas fa-file-alt me-2"></i>Перейти
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

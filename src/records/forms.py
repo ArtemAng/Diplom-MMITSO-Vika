@@ -2,9 +2,15 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from .models import User, Document, DocumentType
 from django import forms
 
-class LoginForm(AuthenticationForm):
-    username = forms.CharField(label="Логин", widget=forms.TextInput(attrs={'class': 'form-control'}))
-    password = forms.CharField(label="Пароль", widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+class LoginForm(forms.Form):
+    username = forms.CharField(
+        label='Имя пользователя',
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    password = forms.CharField(
+        label='Пароль',
+        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+    )
 
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -68,3 +74,19 @@ class DocumentForm(forms.ModelForm):
             except ValueError:
                 raise forms.ValidationError("Введите корректную дату в формате дд/мм/гггг")
         return date 
+
+class SignupForm(forms.Form):
+    username = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={'class': 'form-control'})
+    )
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+        help_text='Минимум 8 символов. Не должно быть слишком простым.'
+    )
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+        help_text='Повторите пароль для подтверждения.'
+    ) 

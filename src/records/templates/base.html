@@ -57,9 +57,12 @@
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'logout' %}">
-                                <i class="fas fa-sign-out-alt me-1"></i>Выйти
-                            </a>
+                            <form method="post" action="{% url 'logout' %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="nav-link btn btn-link">
+                                    <i class="fas fa-sign-out-alt me-1"></i>Выйти
+                                </button>
+                            </form>
                         </li>
                     {% else %}
                         <li class="nav-item">

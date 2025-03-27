@@ -88,4 +88,25 @@ body {
 .pagination .page-item.active .page-link {
     background-color: #1976d2;
     border-color: #1976d2;
+}
+
+/* Стили для кнопки выхода */
+.btn-link {
+    color: rgba(255,255,255,.8);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    display: inline-block;
+}
+
+.btn-link:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+.nav-item .btn-link {
+    color: rgba(255,255,255,.8);
+}
+
+.nav-item .btn-link:hover {
+    color: #fff;
 } 
