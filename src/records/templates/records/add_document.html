@@ -1,30 +1,52 @@
 <!-- src/templates/add_document.html -->
 
-{% extends 'records/base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
 <div class="container mt-4">
-    <h1>Добавить документ</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="document_type">Тип документа:</label>
-            {{ form.document_type }}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="card-title mb-0">Добавление документа</h2>
+                        <a href="{% url 'profile' %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Назад к профилю
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                            <div class="input-group">
+                                {{ field }}
+                                {% if field.name in 'issue_date,expiry_date' %}
+                                <span class="input-group-text">
+                                    <i class="fas fa-calendar"></i>
+                                </span>
+                                {% endif %}
+                            </div>
+                            {% if field.errors %}
+                            <div class="alert alert-danger mt-2">
+                                {{ field.errors }}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'profile' %}" class="btn btn-secondary">Отмена</a>
+                            <button type="submit" class="btn btn-primary">Добавить документ</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="file_path">Файл:</label>
-            <input type="file" name="file_path" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="issue_date">Дата выдачи:</label>
-            {{ form.issue_date }}
-        </div>
-        <div class="form-group">
-            <label for="expiry_date">Дата истечения:</label>
-            {{ form.expiry_date }}
-        </div>
-        <button type="submit" class="btn btn-primary">Сохранить</button>
-        <a href="{% url 'profile' %}" class="btn btn-secondary">Отмена</a>
-    </form>
+    </div>
 </div>
 {% endblock %}

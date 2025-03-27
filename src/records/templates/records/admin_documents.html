@@ -2,89 +2,97 @@
 
 {% block content %}
 <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Управление документами</h2>
-        <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Назад к панели
-        </a>
-    </div>
-
-    <div class="card">
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Пользователь</th>
-                            <th>Тип документа</th>
-                            <th>Дата выдачи</th>
-                            <th>Срок действия</th>
-                            <th>Дата загрузки</th>
-                            <th>Действия</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for document in documents %}
-                        <tr>
-                            <td>{{ document.id }}</td>
-                            <td>{{ document.user.username }}</td>
-                            <td>{{ document.document_type.name }}</td>
-                            <td>{{ document.issue_date }}</td>
-                            <td>{{ document.expiry_date|default:"Не указан" }}</td>
-                            <td>{{ document.uploaded_at|date:"d.m.Y H:i" }}</td>
-                            <td>
-                                <div class="btn-group" role="group">
-                                    <a href="{% url 'download_document' document.id %}" 
-                                       class="btn btn-sm btn-primary" 
-                                       title="Скачать">
-                                        <i class="fas fa-download me-1"></i> Скачать
-                                    </a>
-                                    <a href="{% url 'edit_document' document.id %}" 
-                                       class="btn btn-sm btn-warning" 
-                                       title="Редактировать">
-                                        <i class="fas fa-edit me-1"></i> Редактировать
-                                    </a>
-                                    <a href="{% url 'admin_delete_document' document.id %}" 
-                                       class="btn btn-sm btn-danger" 
-                                       title="Удалить">
-                                        <i class="fas fa-trash me-1"></i> Удалить
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="7" class="text-center">Документы не найдены</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="card-title mb-0">Управление документами</h2>
+                        <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Назад к панели
+                        </a>
+                    </div>
+                </div>
             </div>
 
-            {% if is_paginated %}
-            <nav aria-label="Page navigation" class="mt-4">
-                <ul class="pagination justify-content-center">
-                    {% if page_obj.has_previous %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
-                    </li>
-                    {% endif %}
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Пользователь</th>
+                                    <th>Тип документа</th>
+                                    <th>Дата выдачи</th>
+                                    <th>Срок действия</th>
+                                    <th>Дата загрузки</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for document in documents %}
+                                <tr>
+                                    <td>{{ document.id }}</td>
+                                    <td>{{ document.user.username }}</td>
+                                    <td>{{ document.document_type.name }}</td>
+                                    <td>{{ document.issue_date }}</td>
+                                    <td>{{ document.expiry_date|default:"Не указан" }}</td>
+                                    <td>{{ document.uploaded_at|date:"d.m.Y H:i" }}</td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="{% url 'download_document' document.id %}" 
+                                               class="btn btn-sm btn-primary" 
+                                               title="Скачать">
+                                                <i class="fas fa-download me-1"></i> Скачать
+                                            </a>
+                                            <a href="{% url 'edit_document' document.id %}" 
+                                               class="btn btn-sm btn-warning" 
+                                               title="Редактировать">
+                                                <i class="fas fa-edit me-1"></i> Редактировать
+                                            </a>
+                                            <a href="{% url 'admin_delete_document' document.id %}" 
+                                               class="btn btn-sm btn-danger" 
+                                               title="Удалить">
+                                                <i class="fas fa-trash me-1"></i> Удалить
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="7" class="text-center">Документы не найдены</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
 
-                    {% for num in page_obj.paginator.page_range %}
-                    <li class="page-item {% if page_obj.number == num %}active{% endif %}">
-                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-                    </li>
-                    {% endfor %}
+                    {% if is_paginated %}
+                    <nav aria-label="Page navigation" class="mt-4">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+                            </li>
+                            {% endif %}
 
-                    {% if page_obj.has_next %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Следующая</a>
-                    </li>
+                            {% for num in page_obj.paginator.page_range %}
+                            <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                            </li>
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Следующая</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
                     {% endif %}
-                </ul>
-            </nav>
-            {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 </div>

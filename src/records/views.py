@@ -77,12 +77,12 @@ def profile_view(request):
 @login_required
 def add_document(request):
     if request.method == 'POST':
-        form = DocumentForm(request.POST, request.FILES)  
+        form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             document = form.save(commit=False)
-            document.user = request.user  
-            document.file_path = request.FILES['file_path']  
+            document.user = request.user
             document.save()
+            messages.success(request, 'Документ успешно добавлен.')
             return redirect('profile')
     else:
         form = DocumentForm()
