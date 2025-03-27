@@ -24,6 +24,12 @@ class DocumentForm(forms.ModelForm):
     class Meta:
         model = Document
         fields = ['document_type', 'issue_date', 'expiry_date', 'file_path']
+        labels = {
+            'document_type': 'Тип документа',
+            'issue_date': 'Дата выдачи',
+            'expiry_date': 'Срок действия',
+            'file_path': 'Файл документа'
+        }
         widgets = {
             'issue_date': forms.DateInput(attrs={
                 'class': 'form-control datepicker',
