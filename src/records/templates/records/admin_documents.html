@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block title %}Управление документами{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
@@ -15,81 +18,155 @@
                 </div>
             </div>
 
+            <!-- Поиск и фильтры -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form method="get" class="row g-3">
+                        <!-- Поиск -->
+                        <div class="col-md-12 mb-3">
+                            <div class="input-group">
+                                <input type="text" name="search" class="form-control" 
+                                       placeholder="Поиск по названию, пользователю или типу документа..." 
+                                       value="{{ search_query }}">
+                                <button class="btn btn-outline-secondary" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                                {% if search_query or current_document_type or current_user or current_expiry or current_sort != '-created_at' %}
+                                <a href="{% url 'admin_documents' %}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-times"></i>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Фильтры -->
+                        <div class="col-md-3">
+                            <label for="documentType" class="form-label">Тип документа</label>
+                            <select name="document_type" id="documentType" class="form-select">
+                                <option value="">Все типы</option>
+                                {% for type in document_types %}
+                                    <option value="{{ type.id }}" {% if current_document_type == type.id|stringformat:"s" %}selected{% endif %}>
+                                        {{ type.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="userFilter" class="form-label">Пользователь</label>
+                            <select name="user" id="userFilter" class="form-select">
+                                <option value="">Все пользователи</option>
+                                {% for user in users %}
+                                    <option value="{{ user.id }}" {% if current_user == user.id|stringformat:"s" %}selected{% endif %}>
+                                        {{ user.username }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="expiryFilter" class="form-label">Срок действия</label>
+                            <select name="expiry" id="expiryFilter" class="form-select">
+                                <option value="">Все документы</option>
+                                <option value="valid" {% if current_expiry == 'valid' %}selected{% endif %}>Действующие</option>
+                                <option value="expiring_soon" {% if current_expiry == 'expiring_soon' %}selected{% endif %}>Истекают скоро</option>
+                                <option value="expired" {% if current_expiry == 'expired' %}selected{% endif %}>Просроченные</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="sortFilter" class="form-label">Сортировка</label>
+                            <select name="sort" id="sortFilter" class="form-select">
+                                <option value="-created_at" {% if current_sort == '-created_at' %}selected{% endif %}>Сначала новые</option>
+                                <option value="created_at" {% if current_sort == 'created_at' %}selected{% endif %}>Сначала старые</option>
+                                <option value="original_filename" {% if current_sort == 'original_filename' %}selected{% endif %}>По названию (А-Я)</option>
+                                <option value="-original_filename" {% if current_sort == '-original_filename' %}selected{% endif %}>По названию (Я-А)</option>
+                                <option value="user__username" {% if current_sort == 'user__username' %}selected{% endif %}>По пользователю (А-Я)</option>
+                                <option value="-user__username" {% if current_sort == '-user__username' %}selected{% endif %}>По пользователю (Я-А)</option>
+                                <option value="document_type__name" {% if current_sort == 'document_type__name' %}selected{% endif %}>По типу (А-Я)</option>
+                                <option value="-document_type__name" {% if current_sort == '-document_type__name' %}selected{% endif %}>По типу (Я-А)</option>
+                                <option value="expiry_date" {% if current_sort == 'expiry_date' %}selected{% endif %}>По сроку действия (возр.)</option>
+                                <option value="-expiry_date" {% if current_sort == '-expiry_date' %}selected{% endif %}>По сроку действия (убыв.)</option>
+                            </select>
+                        </div>
+
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-filter me-2"></i>Применить фильтры
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Таблица документов -->
             <div class="card">
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Пользователь</th>
-                                    <th>Тип документа</th>
-                                    <th>Дата выдачи</th>
-                                    <th>Срок действия</th>
-                                    <th>Дата загрузки</th>
-                                    <th>Действия</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for document in documents %}
-                                <tr>
-                                    <td>{{ document.id }}</td>
-                                    <td>{{ document.user.username }}</td>
-                                    <td>{{ document.document_type.name }}</td>
-                                    <td>{{ document.issue_date }}</td>
-                                    <td>{{ document.expiry_date|default:"Не указан" }}</td>
-                                    <td>{{ document.uploaded_at|date:"d.m.Y H:i" }}</td>
-                                    <td>
-                                        <div class="btn-group" role="group">
-                                            <a href="{% url 'download_document' document.id %}" 
-                                               class="btn btn-sm btn-primary" 
-                                               title="Скачать">
-                                                <i class="fas fa-download me-1"></i> Скачать
-                                            </a>
-                                            <a href="{% url 'edit_document' document.id %}" 
-                                               class="btn btn-sm btn-warning" 
-                                               title="Редактировать">
-                                                <i class="fas fa-edit me-1"></i> Редактировать
-                                            </a>
-                                            <a href="{% url 'admin_delete_document' document.id %}" 
-                                               class="btn btn-sm btn-danger" 
-                                               title="Удалить">
-                                                <i class="fas fa-trash me-1"></i> Удалить
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                {% empty %}
-                                <tr>
-                                    <td colspan="7" class="text-center">Документы не найдены</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    {% if is_paginated %}
-                    <nav aria-label="Page navigation" class="mt-4">
-                        <ul class="pagination justify-content-center">
-                            {% if page_obj.has_previous %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
-                            </li>
-                            {% endif %}
-
-                            {% for num in page_obj.paginator.page_range %}
-                            <li class="page-item {% if page_obj.number == num %}active{% endif %}">
-                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-                            </li>
-                            {% endfor %}
-
-                            {% if page_obj.has_next %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Следующая</a>
-                            </li>
-                            {% endif %}
-                        </ul>
-                    </nav>
+                    {% if documents %}
+                        <div class="table-responsive">
+                            <table class="table table-hover shadow-sm">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th class="fw-medium text-secondary">Название документа</th>
+                                        <th class="fw-medium text-secondary">Пользователь</th>
+                                        <th class="fw-medium text-secondary">Тип документа</th>
+                                        <th class="fw-medium text-secondary">Дата выдачи</th>
+                                        <th class="fw-medium text-secondary">Срок действия</th>
+                                        <th class="fw-medium text-secondary">Дата загрузки</th>
+                                        <th class="fw-medium text-secondary">Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for document in documents %}
+                                    <tr class="align-middle">
+                                        <td class="fw-medium">{{ document.original_filename }}</td>
+                                        <td>{{ document.user.username }}</td>
+                                        <td>{{ document.document_type.name }}</td>
+                                        <td>{{ document.issue_date }}</td>
+                                        <td>
+                                            {% if document.expiry_date %}
+                                                {% if document.expiry_date < today %}
+                                                    <span class="badge bg-danger">Просрочен</span>
+                                                {% elif document.expiry_date|timeuntil|slice:":2"|add:"0" <= 10 %}
+                                                    <span class="badge bg-warning text-dark">Истекает {{ document.expiry_date|date:"d.m.Y" }}</span>
+                                                {% else %}
+                                                    <span class="badge bg-success">До {{ document.expiry_date|date:"d.m.Y" }}</span>
+                                                {% endif %}
+                                            {% else %}
+                                                <span class="badge bg-secondary">Не указан</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ document.created_at|date:"d.m.Y H:i" }}</td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <a href="{% url 'download_document' document.id %}" 
+                                                   class="btn btn-sm btn-primary rounded"
+                                                   style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;"
+                                                   title="Скачать">
+                                                    <i class="fas fa-download"></i>
+                                                </a>
+                                                <a href="{% url 'edit_document' document.id %}" 
+                                                   class="btn btn-sm btn-warning rounded"
+                                                   style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;"
+                                                   title="Редактировать">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a href="{% url 'admin_delete_document' document.id %}"
+                                                   class="btn btn-sm btn-danger rounded"
+                                                   style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;"
+                                                   title="Удалить">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% include 'records/includes/pagination.html' with page_obj=documents %}
+                        </div>
+                    {% else %}
+                        <p class="text-center mb-0">Документы не найдены</p>
                     {% endif %}
                 </div>
             </div>

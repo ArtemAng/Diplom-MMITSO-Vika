@@ -1,6 +1,9 @@
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from .models import User, Document, DocumentType
 from django import forms
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+import re
 
 class LoginForm(forms.Form):
     username = forms.CharField(
@@ -29,24 +32,20 @@ class RegistrationForm(UserCreationForm):
 class DocumentForm(forms.ModelForm):
     class Meta:
         model = Document
-        fields = ['document_type', 'issue_date', 'expiry_date', 'file_path']
+        fields = ['document_type', 'issue_date', 'expiry_date', 'file_path', 'original_filename']
         labels = {
             'document_type': 'Тип документа',
             'issue_date': 'Дата выдачи',
             'expiry_date': 'Срок действия',
-            'file_path': 'Файл документа'
+            'file_path': 'Файл документа',
+            'original_filename': 'Название документа'
         }
         widgets = {
-            'issue_date': forms.DateInput(attrs={
-                'class': 'form-control datepicker',
-                'placeholder': 'дд/мм/гггг'
-            }),
-            'expiry_date': forms.DateInput(attrs={
-                'class': 'form-control datepicker',
-                'placeholder': 'дд/мм/гггг'
-            }),
+            'issue_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'expiry_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'document_type': forms.Select(attrs={'class': 'form-control'}),
             'file_path': forms.FileInput(attrs={'class': 'form-control'}),
+            'original_filename': forms.TextInput(attrs={'class': 'form-control'})
         }
 
     def clean_issue_date(self):
@@ -75,18 +74,113 @@ class DocumentForm(forms.ModelForm):
                 raise forms.ValidationError("Введите корректную дату в формате дд/мм/гггг")
         return date 
 
+    def clean(self):
+        cleaned_data = super().clean()
+        issue_date = cleaned_data.get('issue_date')
+        expiry_date = cleaned_data.get('expiry_date')
+        
+        # Проверка, что дата окончания не меньше даты выдачи
+        if issue_date and expiry_date and expiry_date < issue_date:
+            raise forms.ValidationError("Дата окончания документа не может быть меньше даты выдачи.")
+        
+        return cleaned_data
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if 'file_path' in self.files:
+            file = self.files['file_path']
+            instance.original_filename = file.name
+        if commit:
+            instance.save()
+        return instance
+
 class SignupForm(forms.Form):
     username = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control'})
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Имя пользователя'}),
+        required=True
     )
     email = forms.EmailField(
-        widget=forms.EmailInput(attrs={'class': 'form-control'})
+        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
+        required=True
+    )
+    first_name = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Имя'}),
+        required=True
+    )
+    last_name = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Фамилия'}),
+        required=True
     )
     password1 = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
-        help_text='Минимум 8 символов. Не должно быть слишком простым.'
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Пароль'}),
+        help_text='Пароль должен содержать минимум 8 символов, включая заглавные и строчные буквы, цифры и специальные символы.',
+        required=True
     )
     password2 = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
-        help_text='Повторите пароль для подтверждения.'
-    ) 
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Подтвердите пароль'}),
+        help_text='Повторите пароль для подтверждения.',
+        required=True
+    )
+
+    def clean_password1(self):
+        password = self.cleaned_data.get('password1')
+        if password:
+            # Проверка минимальной длины
+            if len(password) < 8:
+                raise ValidationError('Пароль должен содержать минимум 8 символов.')
+            
+            # Проверка наличия заглавных букв
+            if not re.search(r'[A-Z]', password):
+                raise ValidationError('Пароль должен содержать хотя бы одну заглавную букву.')
+            
+            # Проверка наличия строчных букв
+            if not re.search(r'[a-z]', password):
+                raise ValidationError('Пароль должен содержать хотя бы одну строчную букву.')
+            
+            # Проверка наличия цифр
+            if not re.search(r'\d', password):
+                raise ValidationError('Пароль должен содержать хотя бы одну цифру.')
+            
+            # Проверка наличия специальных символов
+            if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
+                raise ValidationError('Пароль должен содержать хотя бы один специальный символ (!@#$%^&*(),.?":{}|<>).')
+            
+            # Проверка на общие пароли
+            common_passwords = ['password', '12345678', 'qwerty123', 'admin123']
+            if password.lower() in common_passwords:
+                raise ValidationError('Этот пароль слишком простой. Пожалуйста, выберите другой пароль.')
+            
+            # Используем встроенную валидацию Django
+            try:
+                validate_password(password)
+            except ValidationError as e:
+                raise ValidationError(e.messages)
+        
+        return password
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+        
+        if password1 and password2 and password1 != password2:
+            raise ValidationError('Пароли не совпадают.')
+        
+        return cleaned_data
+
+class DocumentTypeForm(forms.ModelForm):
+    class Meta:
+        model = DocumentType
+        fields = ['name']
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Введите название типа документа'
+            })
+        }
+
+    def clean_name(self):
+        name = self.cleaned_data['name']
+        if DocumentType.objects.filter(name__iexact=name).exclude(id=self.instance.id).exists():
+            raise forms.ValidationError('Тип документа с таким названием уже существует')
+        return name 

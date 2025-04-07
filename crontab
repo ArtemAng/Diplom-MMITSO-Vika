@@ -1,0 +1,2 @@
+# Запуск проверки документов каждый день в 9:00
+0 9 * * * /usr/local/bin/python /app/manage.py check_expiring_documents >> /var/log/cron.log 2>&1

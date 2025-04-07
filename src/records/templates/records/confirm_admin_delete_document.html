@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Подтверждение удаления документа{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="card-title mb-0">Подтверждение удаления</h2>
+                <a href="{% url 'admin_documents' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Назад к документам
+                </a>
+            </div>
+            <hr>
+            
+            <div class="alert-danger" style="background-color: #f8d7da;">
+                <h4 class="alert-heading">Внимание!</h4>
+                <p>Вы собираетесь удалить документ:</p>
+                <ul class="mb-0">
+                    <li><strong>Тип документа:</strong> {{ document.document_type.name }}</li>
+                    <li><strong>Пользователь:</strong> {{ document.user.username }}</li>
+                    <li><strong>Дата выдачи:</strong> {{ document.issue_date }}</li>
+                    <li><strong>Срок действия:</strong> {{ document.expiry_date|default:"Не указан" }}</li>
+                </ul>
+            </div>
+            
+            <p class="text-danger">Это действие нельзя отменить!</p>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash me-2"></i>Удалить документ
+                    </button>
+                    <a href="{% url 'admin_documents' %}" class="btn btn-secondary">
+                        <i class="fas fa-times me-2"></i>Отмена
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

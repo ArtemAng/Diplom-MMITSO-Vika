@@ -31,39 +31,109 @@
 
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Ваши документы</h5>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Ваши документы</h5>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-outline-primary active" id="tableViewBtn">
+                                <i class="fas fa-table"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-primary" id="gridViewBtn">
+                                <i class="fas fa-th-large"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
                     <a href="{% url 'add_document' %}" class="btn btn-success mb-3">
                         <i class="fas fa-plus me-2"></i>Добавить документ
                     </a>
                     
                     {% if documents %}
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
+                    <!-- Табличный вид -->
+                    <div id="tableView" class="table-responsive">
+                        <table class="table table-hover shadow-sm">
+                            <thead class="bg-light">
                                 <tr>
-                                    <th>Название документа</th>
-                                    <th>Тип документа</th>
-                                    <th>Дата выдачи</th>
-                                    <th>Срок действия</th>
-                                    <th>Действия</th>
+                                    <th class="fw-medium text-secondary">Название документа</th>
+                                    <th class="fw-medium text-secondary">Тип документа</th>
+                                    <th class="fw-medium text-secondary">Дата выдачи</th>
+                                    <th class="fw-medium text-secondary">Срок действия</th>
+                                    <th class="fw-medium text-secondary">Действия</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for document in documents %}
-                                <tr>
-                                    <td>{{ document.file_path.name|cut:"documents/"|cut:user.username|cut:"/" }}</td>
+                                <tr class="align-middle">
+                                    <td class="fw-medium">{{ document.original_filename }}</td>
                                     <td>{{ document.document_type.name }}</td>
                                     <td>{{ document.issue_date }}</td>
                                     <td>{{ document.expiry_date|default:"Не указан" }}</td>
                                     <td>
-                                        <a href="{% url 'download_document' document.id %}" class="btn btn-sm btn-primary"><i class="fas fa-download"></i></a>
-                                        <a href="{% url 'edit_document' document.id %}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                                        <a href="{% url 'delete_document' document.id %}" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                                        <div class="btn-group" role="group">
+                                            <a href="{% url 'download_document' document.id %}" 
+                                               class="btn btn-sm btn-primary rounded" 
+                                               style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;"
+                                               title="Скачать">
+                                                <i class="fas fa-download"></i>
+                                            </a>
+                                            <a href="{% url 'edit_document' document.id %}" 
+                                               class="btn btn-sm btn-warning rounded" 
+                                               style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;"
+                                               title="Редактировать">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="{% url 'delete_document' document.id %}" 
+                                               class="btn btn-sm btn-danger rounded" 
+                                               style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;"
+                                               title="Удалить">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
+                        {% include 'records/includes/pagination.html' with page_obj=documents %}
+                    </div>
+
+                    <!-- Сетка -->
+                    <div id="gridView" class="row g-4" style="display: none;">
+                        {% for document in documents %}
+                        <div class="col-md-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h6 class="card-title">{{ document.original_filename }}</h6>
+                                    <p class="card-text">
+                                        <small class="text-muted">
+                                            <i class="fas fa-file-alt me-1"></i>{{ document.document_type.name }}<br>
+                                            <i class="fas fa-calendar-alt me-1"></i>Выдан: {{ document.issue_date }}<br>
+                                            <i class="fas fa-clock me-1"></i>Срок: {{ document.expiry_date|default:"Не указан" }}
+                                        </small>
+                                    </p>
+                                    <div class="btn-group w-100" role="group">
+                                        <a href="{% url 'download_document' document.id %}" 
+                                           class="btn btn-sm btn-primary rounded" 
+                                           style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;"
+                                           title="Скачать">
+                                            <i class="fas fa-download"></i>
+                                        </a>
+                                        <a href="{% url 'edit_document' document.id %}" 
+                                           class="btn btn-sm btn-warning rounded" 
+                                           style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;"
+                                           title="Редактировать">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="{% url 'delete_document' document.id %}" 
+                                           class="btn btn-sm btn-danger rounded" 
+                                           style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;"
+                                           title="Удалить">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
                     {% else %}
                     <p>У вас пока нет документов.</p>
@@ -73,4 +143,43 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const tableViewBtn = document.getElementById('tableViewBtn');
+    const gridViewBtn = document.getElementById('gridViewBtn');
+    const tableView = document.getElementById('tableView');
+    const gridView = document.getElementById('gridView');
+
+    // Загружаем сохраненное предпочтение
+    const viewPreference = localStorage.getItem('documentViewPreference') || 'table';
+    if (viewPreference === 'grid') {
+        switchToGridView();
+    }
+
+    tableViewBtn.addEventListener('click', function() {
+        switchToTableView();
+        localStorage.setItem('documentViewPreference', 'table');
+    });
+
+    gridViewBtn.addEventListener('click', function() {
+        switchToGridView();
+        localStorage.setItem('documentViewPreference', 'grid');
+    });
+
+    function switchToTableView() {
+        tableView.style.display = 'block';
+        gridView.style.display = 'none';
+        tableViewBtn.classList.add('active');
+        gridViewBtn.classList.remove('active');
+    }
+
+    function switchToGridView() {
+        tableView.style.display = 'none';
+        gridView.style.display = 'flex';
+        tableViewBtn.classList.remove('active');
+        gridViewBtn.classList.add('active');
+    }
+});
+</script>
 {% endblock %}

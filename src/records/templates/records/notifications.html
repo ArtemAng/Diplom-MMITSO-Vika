@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+{% block title %}Уведомления{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h2 class="card-title h5 mb-0">
+                        <i class="fas fa-bell me-2"></i>Уведомления
+                    </h2>
+                    {% if total_count > 0 %}
+                    <span class="badge bg-light text-primary">{{ total_count }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="card-body p-0">
+                    {% if notifications %}
+                        {% regroup notifications by notification_date|date:"d.m.Y" as notifications_by_date %}
+                        {% for date_group in notifications_by_date %}
+                            <div class="notification-group">
+                                <div class="notification-date bg-light p-2 ps-3 border-bottom">
+                                    <small class="text-muted">
+                                        <i class="fas fa-calendar-alt me-2"></i>{{ date_group.grouper }}
+                                    </small>
+                                </div>
+                                <div class="list-group list-group-flush">
+                                    {% for notification in date_group.list %}
+                                        <div class="list-group-item list-group-item-action p-3 notification-item {% if not notification.is_sent %}border-start border-4 border-warning{% endif %}"
+                                             data-mdb-ripple-color="primary">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <div class="d-flex w-100 justify-content-between align-items-center">
+                                                        <h6 class="mb-2 {% if not notification.is_sent %}fw-bold{% endif %}">
+                                                            {% if "истек" in notification.message|lower %}
+                                                                <i class="fas fa-exclamation-circle text-danger me-2"></i>
+                                                            {% elif "сегодня" in notification.message|lower %}
+                                                                <i class="fas fa-exclamation-circle text-warning me-2"></i>
+                                                            {% else %}
+                                                                <i class="fas fa-info-circle text-info me-2"></i>
+                                                            {% endif %}
+                                                            {{ notification.message }}
+                                                        </h6>
+                                                        {% if not notification.is_sent %}
+                                                            <span class="badge bg-warning text-dark">Новое</span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <a href="{% url 'edit_document' notification.document.id %}" 
+                                                       class="btn btn-primary btn-sm" 
+                                                       data-mdb-toggle="tooltip" 
+                                                       title="Редактировать документ"
+                                                       style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        {% if notifications.paginator.num_pages > 1 %}
+                        <div class="d-flex justify-content-center p-3 border-top bg-light">
+                            <nav aria-label="Навигация по страницам">
+                                <ul class="pagination pagination-circle mb-0">
+                                    {% if notifications.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page=1" aria-label="Первая">
+                                                <i class="fas fa-angle-double-left"></i>
+                                            </a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ notifications.previous_page_number }}" aria-label="Предыдущая">
+                                                <i class="fas fa-angle-left"></i>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% for num in notifications.paginator.page_range %}
+                                        {% if notifications.number == num %}
+                                            <li class="page-item active">
+                                                <span class="page-link">{{ num }}</span>
+                                            </li>
+                                        {% elif num > notifications.number|add:'-3' and num < notifications.number|add:'3' %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if notifications.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ notifications.next_page_number }}" aria-label="Следующая">
+                                                <i class="fas fa-angle-right"></i>
+                                            </a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ notifications.paginator.num_pages }}" aria-label="Последняя">
+                                                <i class="fas fa-angle-double-right"></i>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="text-center py-5">
+                            <div class="mb-3">
+                                <i class="fas fa-bell-slash fa-3x text-muted"></i>
+                            </div>
+                            <h6 class="text-muted">У вас нет уведомлений</h6>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.notification-item {
+    transition: all 0.3s ease;
+}
+.notification-item:hover {
+    background-color: rgba(0,0,0,0.02);
+}
+.notification-date {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    backdrop-filter: blur(8px);
+}
+.pagination-circle .page-link {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    margin: 0 2px;
+}
+.pagination-circle .page-item.active .page-link {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Инициализация тултипов
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-mdb-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new mdb.Tooltip(tooltipTriggerEl)
+    });
+});
+</script>
+{% endblock %} 

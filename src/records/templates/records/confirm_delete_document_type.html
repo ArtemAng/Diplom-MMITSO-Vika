@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Подтверждение удаления типа документа{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="card-title mb-0">Подтверждение удаления</h2>
+                        <a href="{% url 'manage_document_types' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Назад к списку
+                        </a>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <h4 class="alert-heading">Внимание!</h4>
+                        <p>Вы собираетесь удалить тип документа "{{ document_type.name }}".</p>
+                        
+                        {% if documents_count > 0 %}
+                            <hr>
+                            <p class="mb-0 text-danger">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                С этим типом связано {{ documents_count }} документ(ов). При удалении типа все связанные документы останутся без типа!
+                            </p>
+                        {% endif %}
+                    </div>
+
+                    <p class="text-danger text-center">Это действие нельзя отменить!</p>
+
+                    <form method="post" class="mt-4">
+                        {% csrf_token %}
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash me-2"></i>Удалить тип документа
+                            </button>
+                            <a href="{% url 'manage_document_types' %}" class="btn btn-secondary">
+                                <i class="fas fa-times me-2"></i>Отмена
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

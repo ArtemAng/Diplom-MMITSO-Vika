@@ -4,65 +4,133 @@
 
 {% block content %}
 <div class="container mt-4">
-    <div class="card">
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center">
-                <h2 class="card-title mb-0">Управление пользователями</h2>
-                <a href="{% url 'admin_dashboard' %}" class="btn btn-outline-secondary">
-                    <i class="fas fa-arrow-left me-2"></i>Назад к панели
-                </a>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="card-title mb-0">Управление пользователями</h2>
+                        <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Назад к панели
+                        </a>
+                    </div>
+                </div>
             </div>
-            <hr>
-            
-            {% if users %}
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Имя пользователя</th>
-                            <th>Email</th>
-                            <th>Роль</th>
-                            <th>Статус</th>
-                            <th>Действия</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for user in users %}
-                        <tr>
-                            <td>{{ user.username }}</td>
-                            <td>{{ user.email }}</td>
-                            <td>{{ user.role.name|default:"Не назначена" }}</td>
-                            <td>
-                                {% if user.is_staff %}
-                                    <span class="badge bg-primary">Администратор</span>
-                                {% else %}
-                                    <span class="badge bg-secondary">Пользователь</span>
+
+            <!-- Поиск и фильтры -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form method="get" class="row g-3">
+                        <!-- Поиск -->
+                        <div class="col-md-12 mb-3">
+                            <div class="input-group">
+                                <input type="text" name="search" class="form-control" 
+                                       placeholder="Поиск по имени, email или имени пользователя..." 
+                                       value="{{ search_query }}">
+                                <button class="btn btn-outline-secondary" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                                {% if search_query or current_role or current_status or current_sort != '-date_joined' %}
+                                <a href="{% url 'admin_users' %}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-times"></i>
+                                </a>
                                 {% endif %}
-                            </td>
-                            <td>
-                                <div class="btn-group" role="group">
-                                    <form method="post" action="{% url 'toggle_admin' user.id %}" class="d-inline">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-sm {% if user.is_staff %}btn-danger{% else %}btn-success{% endif %}" 
-                                                title="{% if user.is_staff %}Отозвать права администратора{% else %}Назначить администратором{% endif %}">
-                                            <i class="fas {% if user.is_staff %}fa-user-slash{% else %}fa-user-shield{% endif %}"></i>
-                                        </button>
-                                    </form>
-                                    <a href="{% url 'admin_delete_user' user.id %}" 
-                                       class="btn btn-sm btn-danger" 
-                                       title="Удалить пользователя">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                            </div>
+                        </div>
+
+                        <!-- Фильтры -->
+                        <div class="col-md-4">
+                            <label for="roleFilter" class="form-label">Роль</label>
+                            <select name="role" id="roleFilter" class="form-select">
+                                <option value="">Все роли</option>
+                                <option value="admin" {% if current_role == 'admin' %}selected{% endif %}>Администраторы</option>
+                                <option value="user" {% if current_role == 'user' %}selected{% endif %}>Пользователи</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="sortFilter" class="form-label">Сортировка</label>
+                            <select name="sort" id="sortFilter" class="form-select">
+                                <option value="-date_joined" {% if current_sort == '-date_joined' %}selected{% endif %}>Сначала новые</option>
+                                <option value="date_joined" {% if current_sort == 'date_joined' %}selected{% endif %}>Сначала старые</option>
+                                <option value="username" {% if current_sort == 'username' %}selected{% endif %}>По имени пользователя (А-Я)</option>
+                                <option value="-username" {% if current_sort == '-username' %}selected{% endif %}>По имени пользователя (Я-А)</option>
+                                <option value="email" {% if current_sort == 'email' %}selected{% endif %}>По email (А-Я)</option>
+                                <option value="-email" {% if current_sort == '-email' %}selected{% endif %}>По email (Я-А)</option>
+                            </select>
+                        </div>
+
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-filter me-2"></i>Применить фильтры
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            {% else %}
-            <p>Нет доступных пользователей.</p>
-            {% endif %}
+
+            <!-- Таблица пользователей -->
+            <div class="card">
+                <div class="card-body">
+                    {% if users %}
+                        <div class="table-responsive">
+                            <table class="table table-hover shadow-sm">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th class="fw-medium text-secondary">Имя пользователя</th>
+                                        <th class="fw-medium text-secondary">Email</th>
+                                        <th class="fw-medium text-secondary">Имя</th>
+                                        <th class="fw-medium text-secondary">Фамилия</th>
+                                        <th class="fw-medium text-secondary">Роль</th>
+                                        <th class="fw-medium text-secondary">Дата регистрации</th>
+                                        <th class="fw-medium text-secondary">Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for user in users %}
+                                    <tr class="align-middle">
+                                        <td class="fw-medium">{{ user.username }}</td>
+                                        <td>{{ user.email }}</td>
+                                        <td>{{ user.first_name }}</td>
+                                        <td>{{ user.last_name }}</td>
+                                        <td>
+                                            {% if user.is_staff %}
+                                                <span class="badge bg-primary">Администратор</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Пользователь</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ user.date_joined|date:"d.m.Y H:i" }}</td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <form method="post" action="{% url 'toggle_admin' user.id %}" class="d-inline">
+                                                    {% csrf_token %}
+                                                    <button type="submit" 
+                                                            class="btn btn-sm {% if user.is_staff %}btn-warning{% else %}btn-success{% endif %} rounded"
+                                                            style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;"
+                                                            title="{% if user.is_staff %}Отозвать права администратора{% else %}Назначить администратором{% endif %}">
+                                                        <i class="fas {% if user.is_staff %}fa-user-minus{% else %}fa-user-shield{% endif %}"></i>
+                                                    </button>
+                                                </form>
+                                                <a href="{% url 'admin_delete_user' user.id %}"
+                                                   class="btn btn-sm btn-danger rounded"
+                                                   style="width: 32px; height: 32px; padding: 0; margin-left: 5px; display: flex; align-items: center; justify-content: center;"
+                                                   title="Удалить">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% include 'records/includes/pagination.html' with page_obj=users %}
+                        </div>
+                    {% else %}
+                        <p class="text-center mb-0">Пользователи не найдены</p>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 </div>

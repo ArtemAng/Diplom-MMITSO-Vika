@@ -2,6 +2,7 @@ import os
 import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.utils import timezone
 
 class UserManager(BaseUserManager):
     def create_user(self, username, email, password=None, **extra_fields):
@@ -23,6 +24,12 @@ class User(AbstractUser):
     role = models.ForeignKey('Role', on_delete=models.CASCADE, null=True, blank=True)
 
     objects = UserManager()
+
+    @property
+    def unread_notifications_count(self):
+        count = self.notifications.filter(is_sent=False).count()
+        print(f"User {self.username} has {count} unread notifications")
+        return count
 
     def __str__(self):
         return self.username
@@ -46,23 +53,15 @@ class DocumentType(models.Model):
 class Document(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="documents")
     document_type = models.ForeignKey(DocumentType, on_delete=models.CASCADE)
-    file_path = models.FileField(upload_to='documents/')
     issue_date = models.DateField()
     expiry_date = models.DateField(null=True, blank=True)
-    uploaded_at = models.DateTimeField(auto_now_add=True)
+    file_path = models.FileField(upload_to='documents/')
+    original_filename = models.CharField(max_length=255, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def save(self, *args, **kwargs):
-        user_folder = os.path.join(str(self.user.username))
-        
-        file_extension = os.path.splitext(self.file_path.name)[1]
-        unique_name = f"{uuid.uuid4()}{file_extension}"
-        self.file_path.name = os.path.join(user_folder, unique_name)
-        
-        super().save(*args, **kwargs)
-
     def __str__(self):
-        return f"{self.user.username} - {self.document_type.name}"
+        return f"{self.document_type.name} - {self.original_filename or self.file_path.name}"
 
 # Логи документов
 class DocumentLog(models.Model):
@@ -77,11 +76,17 @@ class DocumentLog(models.Model):
 
 # Уведомления
 class Notification(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    document = models.ForeignKey(Document, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
+    document = models.ForeignKey(Document, on_delete=models.CASCADE, related_name='notifications')
     notification_date = models.DateField()
     message = models.TextField()
     is_sent = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Уведомление'
+        verbose_name_plural = 'Уведомления'
 
     def __str__(self):
-        return f"To: {self.user.username} - {self.message[:50]}"
+        return f"Уведомление для {self.user.username} о документе {self.document.original_filename}"
