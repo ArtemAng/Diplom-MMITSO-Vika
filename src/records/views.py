@@ -79,6 +79,7 @@ def signup_view(request):
             password2 = form.cleaned_data['password2']
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
+            agree_policy = form.cleaned_data['agree_policy']
             
             if password1 != password2:
                 messages.error(request, 'Пароли не совпадают.')
@@ -86,6 +87,10 @@ def signup_view(request):
             
             if User.objects.filter(username=username).exists():
                 messages.error(request, 'Пользователь с таким именем уже существует.')
+                return render(request, 'records/signup.html', {'form': form})
+            
+            if not agree_policy:
+                messages.error(request, 'Для регистрации необходимо согласиться с пользовательским соглашением.')
                 return render(request, 'records/signup.html', {'form': form})
             
             user = User.objects.create_user(
@@ -609,3 +614,9 @@ def admin_mark_notification_read(request, notification_id):
         messages.error(request, 'Вы можете отмечать как прочитанные только свои уведомления.')
     
     return redirect('admin_notifications')
+
+def privacy_policy_view(request):
+    """
+    Представление для отображения страницы пользовательского соглашения
+    """
+    return render(request, 'records/privacy_policy.html')

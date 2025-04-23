@@ -96,30 +96,36 @@ class DocumentForm(forms.ModelForm):
 
 class SignupForm(forms.Form):
     username = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Имя пользователя'}),
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': ' '}),
         required=True
     )
     email = forms.EmailField(
-        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
+        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': ' '}),
         required=True
     )
     first_name = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Имя'}),
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': ' '}),
         required=True
     )
     last_name = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Фамилия'}),
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': ' '}),
         required=True
     )
     password1 = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Пароль'}),
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': ' '}),
         help_text='Пароль должен содержать минимум 8 символов, включая заглавные и строчные буквы, цифры и специальные символы.',
         required=True
     )
     password2 = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Подтвердите пароль'}),
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': ' '}),
         help_text='Повторите пароль для подтверждения.',
         required=True
+    )
+    agree_policy = forms.BooleanField(
+        required=True,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input me-2'}),
+        label='Я согласен на обработку персональных данных',
+        help_text='Для регистрации необходимо согласиться с условиями <a href="/privacy-policy/" target="_blank">пользовательского соглашения</a>.'
     )
 
     def clean_password1(self):

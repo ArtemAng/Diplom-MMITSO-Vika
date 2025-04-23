@@ -7,7 +7,7 @@ from .views import (
     admin_dashboard, admin_documents, admin_delete_document, logout_view,
     admin_users, admin_delete_user, home_view, manage_document_types, toggle_admin,
     notifications, admin_notifications, admin_delete_notification, admin_mark_notification_read,
-    edit_document_type, delete_document_type
+    edit_document_type, delete_document_type, privacy_policy_view
 )
 from django.contrib.auth import views as auth_views
 
@@ -26,6 +26,7 @@ urlpatterns = [
     path('signup/', signup_view, name='signup'),
     path('logout/', logout_view, name='logout'),
     path('profile/', profile_view, name='profile'),
+    path('privacy-policy/', privacy_policy_view, name='privacy_policy'),
     path('add-document/', add_document, name='add_document'),
     path('delete-document/<int:document_id>/', delete_document, name='delete_document'),
     path('download-document/<int:document_id>/', download_document, name='download_document'),
