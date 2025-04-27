@@ -1,6 +1,7 @@
 body {
+    /* background-color: none !important; */
     font-family: 'Roboto', sans-serif;
-    background-color: #f8f9fa;
+    /* background-color: #f8f9fa; */
 }
 
 .navbar {
