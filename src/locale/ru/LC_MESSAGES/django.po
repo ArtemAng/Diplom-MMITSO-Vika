@@ -362,3 +362,33 @@ msgstr "До"
 #: records/templates/records/admin_documents.html:174
 msgid "No documents found"
 msgstr "Документы не найдены"
+
+msgid "Filter by User"
+msgstr "Фильтр по пользователю"
+
+msgid "Notification Status"
+msgstr "Статус уведомления"
+
+msgid "All statuses"
+msgstr "Все статусы"
+
+msgid "Unread"
+msgstr "Не прочитано"
+
+msgid "Read"
+msgstr "Прочитано"
+
+msgid "Reset"
+msgstr "Сбросить"
+
+msgid "Message"
+msgstr "Сообщение"
+
+msgid "Creation Date"
+msgstr "Дата создания"
+
+msgid "Mark as read"
+msgstr "Отметить как прочитанное"
+
+msgid "No notifications found"
+msgstr "Уведомления не найдены"

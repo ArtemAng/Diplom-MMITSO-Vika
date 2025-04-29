@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Управление уведомлениями{% endblock %}
+{% block title %}{% trans "Notification Management" %}{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
@@ -9,9 +10,9 @@
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h2 class="card-title mb-0">Управление уведомлениями</h2>
+                        <h2 class="card-title mb-0">{% trans "Notification Management" %}</h2>
                         <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left me-2"></i>Назад к панели
+                            <i class="fas fa-arrow-left me-2"></i>{% trans "Back to Panel" %}
                         </a>
                     </div>
                 </div>
@@ -22,9 +23,9 @@
                 <div class="card-body">
                     <form method="get" class="row g-3">
                         <div class="col-md-4">
-                            <label for="userFilter" class="form-label">Фильтр по пользователю</label>
+                            <label for="userFilter" class="form-label">{% trans "Filter by User" %}</label>
                             <select name="user" id="userFilter" class="form-select">
-                                <option value="">Все пользователи</option>
+                                <option value="">{% trans "All users" %}</option>
                                 {% for user in users %}
                                     <option value="{{ user.username }}" {% if user.username == current_user_filter %}selected{% endif %}>
                                         {{ user.username }}
@@ -33,16 +34,16 @@
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <label for="statusFilter" class="form-label">Статус уведомления</label>
+                            <label for="statusFilter" class="form-label">{% trans "Notification Status" %}</label>
                             <select name="status" id="statusFilter" class="form-select">
-                                <option value="">Все статусы</option>
-                                <option value="unread" {% if current_status_filter == 'unread' %}selected{% endif %}>Непрочитанные</option>
-                                <option value="read" {% if current_status_filter == 'read' %}selected{% endif %}>Прочитанные</option>
+                                <option value="">{% trans "All statuses" %}</option>
+                                <option value="unread" {% if current_status_filter == 'unread' %}selected{% endif %}>{% trans "Unread" %}</option>
+                                <option value="read" {% if current_status_filter == 'read' %}selected{% endif %}>{% trans "Read" %}</option>
                             </select>
                         </div>
                         <div class="col-md-4 d-flex align-items-end">
-                            <button type="submit" class="btn btn-primary me-2">Применить фильтры</button>
-                            <a href="{% url 'admin_notifications' %}" class="btn btn-outline-secondary">Сбросить</a>
+                            <button type="submit" class="btn btn-primary me-2">{% trans "Apply filters" %}</button>
+                            <a href="{% url 'admin_notifications' %}" class="btn btn-outline-secondary">{% trans "Reset" %}</a>
                         </div>
                     </form>
                 </div>
@@ -56,12 +57,12 @@
                             <table class="table table-hover shadow-sm">
                                 <thead class="bg-light">
                                     <tr>
-                                        <th class="fw-medium text-secondary">Пользователь</th>
-                                        <th class="fw-medium text-secondary">Документ</th>
-                                        <th class="fw-medium text-secondary">Сообщение</th>
-                                        <th class="fw-medium text-secondary">Дата создания</th>
-                                        <th class="fw-medium text-secondary">Статус</th>
-                                        <th class="fw-medium text-secondary">Действия</th>
+                                        <th class="fw-medium text-secondary">{% trans "User" %}</th>
+                                        <th class="fw-medium text-secondary">{% trans "Document" %}</th>
+                                        <th class="fw-medium text-secondary">{% trans "Message" %}</th>
+                                        <th class="fw-medium text-secondary">{% trans "Creation Date" %}</th>
+                                        <th class="fw-medium text-secondary">{% trans "Status" %}</th>
+                                        <th class="fw-medium text-secondary">{% trans "Actions" %}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -81,9 +82,9 @@
                                         <td>{{ notification.created_at|date:"d.m.Y H:i" }}</td>
                                         <td>
                                             {% if notification.is_sent %}
-                                                <span class="badge bg-success">Прочитано</span>
+                                                <span class="badge bg-success">{% trans "Read" %}</span>
                                             {% else %}
-                                                <span class="badge bg-warning text-dark">Не прочитано</span>
+                                                <span class="badge bg-warning text-dark">{% trans "Unread" %}</span>
                                             {% endif %}
                                         </td>
                                         <td>
@@ -92,14 +93,14 @@
                                                     <a href="{% url 'admin_mark_notification_read' notification.id %}"
                                                        class="btn btn-sm btn-success rounded"
                                                        style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;"
-                                                       title="Отметить как прочитанное">
+                                                       title="{% trans 'Mark as read' %}">
                                                         <i class="fas fa-check"></i>
                                                     </a>
                                                 {% endif %}
                                                 <a href="{% url 'admin_delete_notification' notification.id %}"
                                                    class="btn btn-sm btn-danger rounded"
                                                    style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;"
-                                                   title="Удалить">
+                                                   title="{% trans 'Delete' %}">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </div>
@@ -111,7 +112,7 @@
                             {% include 'records/includes/pagination.html' with page_obj=notifications %}
                         </div>
                     {% else %}
-                        <p class="text-center mb-0">Уведомления не найдены</p>
+                        <p class="text-center mb-0">{% trans "No notifications found" %}</p>
                     {% endif %}
                 </div>
             </div>
