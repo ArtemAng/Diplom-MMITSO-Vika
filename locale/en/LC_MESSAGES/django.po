@@ -1,0 +1,44 @@
+# English translations
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-19 12:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Document Management System"
+msgstr "Document Management System"
+
+msgid "Documents"
+msgstr "Documents"
+
+msgid "Profile"
+msgstr "Profile"
+
+msgid "Add Document"
+msgstr "Add Document"
+
+msgid "Admin Panel"
+msgstr "Admin Panel"
+
+msgid "Notifications"
+msgstr "Notifications"
+
+msgid "unread notifications"
+msgstr "unread notifications"
+
+msgid "Logout"
+msgstr "Logout"
+
+msgid "Login"
+msgstr "Login"
+
+msgid "Sign Up"
+msgstr "Sign Up" 

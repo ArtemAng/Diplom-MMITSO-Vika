@@ -1,20 +1,21 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block content %}
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-12">
-            <h2>Профиль пользователя</h2>
+            <h2>{% trans "User Profile" %}</h2>
             <div class="card mb-4">
                 <div class="card-body">
-                    <h5 class="card-title">Информация о пользователе</h5>
-                    <p><strong>Имя пользователя:</strong> {{ user.username }}</p>
-                    <p><strong>Email:</strong> {{ user.email }}</p>
-                    <p><strong>Статус:</strong> 
+                    <h5 class="card-title">{% trans "User Information" %}</h5>
+                    <p><strong>{% trans "Username" %}:</strong> {{ user.username }}</p>
+                    <p><strong>{% trans "Email" %}:</strong> {{ user.email }}</p>
+                    <p><strong>{% trans "Status" %}:</strong> 
                         {% if user.is_authenticated and user.is_staff %}
-                            <span class="badge bg-primary">Администратор</span>
+                            <span class="badge bg-primary">{% trans "Administrator" %}</span>
                         {% else %}
-                            <span class="badge bg-secondary">Пользователь</span>
+                            <span class="badge bg-secondary">{% trans "User" %}</span>
                         {% endif %}
                     </p>
                 </div>
@@ -23,8 +24,8 @@
             {% if user.is_authenticated and user.is_staff %}
             <div class="card mb-4">
                 <div class="card-body">
-                    <h5 class="card-title">Административные функции</h5>
-                    <a href="{% url 'admin_dashboard' %}" class="btn btn-primary">Перейти в панель администратора</a>
+                    <h5 class="card-title">{% trans "Administrative Functions" %}</h5>
+                    <a href="{% url 'admin_dashboard' %}" class="btn btn-primary">{% trans "Go to Admin Panel" %}</a>
                 </div>
             </div>
             {% endif %}
@@ -32,19 +33,19 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="card-title mb-0">Ваши документы</h5>
+                        <h5 class="card-title mb-0">{% trans "Your Documents" %}</h5>
                         <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-outline-primary active" id="tableViewBtn">
+                            <button type="button" class="btn btn-outline-primary active" id="tableViewBtn" title="{% trans 'Table View' %}">
                                 <i class="fas fa-table"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-primary" id="gridViewBtn">
+                            <button type="button" class="btn btn-outline-primary" id="gridViewBtn" title="{% trans 'Grid View' %}">
                                 <i class="fas fa-th-large"></i>
                             </button>
                         </div>
                     </div>
                     
                     <a href="{% url 'add_document' %}" class="btn btn-success mb-3">
-                        <i class="fas fa-plus me-2"></i>Добавить документ
+                        <i class="fas fa-plus me-2"></i>{% trans "Add Document" %}
                     </a>
                     
                     {% if documents %}
@@ -53,11 +54,11 @@
                         <table class="table table-hover shadow-sm">
                             <thead class="bg-light">
                                 <tr>
-                                    <th class="fw-medium text-secondary">Название документа</th>
-                                    <th class="fw-medium text-secondary">Тип документа</th>
-                                    <th class="fw-medium text-secondary">Дата выдачи</th>
-                                    <th class="fw-medium text-secondary">Срок действия</th>
-                                    <th class="fw-medium text-secondary">Действия</th>
+                                    <th class="fw-medium text-secondary">{% trans "Document Name" %}</th>
+                                    <th class="fw-medium text-secondary">{% trans "Document Type" %}</th>
+                                    <th class="fw-medium text-secondary">{% trans "Issue Date" %}</th>
+                                    <th class="fw-medium text-secondary">{% trans "Expiry Date" %}</th>
+                                    <th class="fw-medium text-secondary">{% trans "Actions" %}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -66,25 +67,25 @@
                                     <td class="fw-medium">{{ document.original_filename }}</td>
                                     <td>{{ document.document_type.name }}</td>
                                     <td>{{ document.issue_date }}</td>
-                                    <td>{{ document.expiry_date|default:"Не указан" }}</td>
+                                    <td>{{ document.expiry_date|default:_("Not specified") }}</td>
                                     <td>
                                         <div class="btn-group" role="group">
                                             <a href="{% url 'download_document' document.id %}" 
                                                class="btn btn-sm btn-primary rounded" 
                                                style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;"
-                                               title="Скачать">
+                                               title="{% trans 'Download' %}">
                                                 <i class="fas fa-download"></i>
                                             </a>
                                             <a href="{% url 'edit_document' document.id %}" 
                                                class="btn btn-sm btn-warning rounded" 
                                                style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;"
-                                               title="Редактировать">
+                                               title="{% trans 'Edit' %}">
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             <a href="{% url 'delete_document' document.id %}" 
                                                class="btn btn-sm btn-danger rounded" 
                                                style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;"
-                                               title="Удалить">
+                                               title="{% trans 'Delete' %}">
                                                 <i class="fas fa-trash"></i>
                                             </a>
                                         </div>
@@ -106,27 +107,27 @@
                                     <p class="card-text">
                                         <small class="text-muted">
                                             <i class="fas fa-file-alt me-1"></i>{{ document.document_type.name }}<br>
-                                            <i class="fas fa-calendar-alt me-1"></i>Выдан: {{ document.issue_date }}<br>
-                                            <i class="fas fa-clock me-1"></i>Срок: {{ document.expiry_date|default:"Не указан" }}
+                                            <i class="fas fa-calendar-alt me-1"></i>{% trans "Issued" %}: {{ document.issue_date }}<br>
+                                            <i class="fas fa-clock me-1"></i>{% trans "Expiry" %}: {{ document.expiry_date|default:_("Not specified") }}
                                         </small>
                                     </p>
                                     <div class="btn-group w-100" role="group">
                                         <a href="{% url 'download_document' document.id %}" 
                                            class="btn btn-sm btn-primary rounded" 
                                            style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;"
-                                           title="Скачать">
+                                           title="{% trans 'Download' %}">
                                             <i class="fas fa-download"></i>
                                         </a>
                                         <a href="{% url 'edit_document' document.id %}" 
                                            class="btn btn-sm btn-warning rounded" 
                                            style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;"
-                                           title="Редактировать">
+                                           title="{% trans 'Edit' %}">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <a href="{% url 'delete_document' document.id %}" 
                                            class="btn btn-sm btn-danger rounded" 
                                            style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;"
-                                           title="Удалить">
+                                           title="{% trans 'Delete' %}">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </div>
@@ -136,7 +137,7 @@
                         {% endfor %}
                     </div>
                     {% else %}
-                    <p>У вас пока нет документов.</p>
+                    <p>{% trans "You don't have any documents yet." %}</p>
                     {% endif %}
                 </div>
             </div>

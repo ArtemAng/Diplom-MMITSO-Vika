@@ -1,0 +1,156 @@
+body {
+    /* background-color: none !important; */
+    font-family: 'Roboto', sans-serif;
+    /* background-color: #f8f9fa; */
+}
+
+.navbar {
+    background-color: #1976d2 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: none;
+    margin-bottom: 1.5rem;
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.btn {
+    padding: 0.375rem 0.75rem;
+    font-size: 14px;
+    border-radius: 0.25rem;
+    transition: all 0.15s ease-in-out;
+    display: inline-block;
+    margin-right: 10px;
+    min-width: 100px;
+    text-align: center;
+}
+
+.btn:last-child {
+    margin-right: 0;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+.btn-outline-secondary {
+    color: #6c757d;
+    border-color: #6c757d;
+    background-color: transparent;
+    border-width: 1px;
+    font-weight: 400;
+    padding: 0.375rem 0.75rem;
+    font-size: 14px;
+}
+
+.btn-outline-secondary:hover {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.form-control {
+    border-radius: 0.25rem;
+    border: 1px solid #ced4da;
+    padding: 0.375rem 0.75rem;
+}
+
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.input-group {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    width: 100%;
+}
+
+.input-group-text {
+    display: flex;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    white-space: nowrap;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+}
+
+.alert {
+    position: relative;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.table {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table thead th {
+    background-color: #f5f5f5;
+    border-bottom: 2px solid #e0e0e0;
+    font-weight: 500;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.pagination .page-link {
+    color: #1976d2;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #1976d2;
+    border-color: #1976d2;
+}
+
+/* Стили для кнопки выхода */
+.btn-link {
+    color: rgba(255,255,255,.8);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    display: inline-block;
+}
+
+.btn-link:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+.nav-item .btn-link {
+    color: rgba(255,255,255,.8);
+}
+
+.nav-item .btn-link:hover {
+    color: #fff;
+}
+
+} 

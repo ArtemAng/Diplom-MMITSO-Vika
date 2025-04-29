@@ -1,0 +1,179 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-04-29 13:23+0000\n"
+"PO-Revision-Date: 2024-03-19 12:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Russian\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: records/templates/base.html:14
+msgid "Document Management System"
+msgstr "Система управления документами"
+
+#: records/templates/base.html:281
+msgid "Documents"
+msgstr "Документы"
+
+#: records/templates/base.html:291
+msgid "Profile"
+msgstr "Профиль"
+
+#: records/templates/base.html:296 records/templates/records/profile.html:48
+msgid "Add Document"
+msgstr "Добавить документ"
+
+#: records/templates/base.html:302
+msgid "Admin Panel"
+msgstr "Панель администратора"
+
+#: records/templates/base.html:315 records/templates/base.html:327
+msgid "Russian"
+msgstr "Русский"
+
+#: records/templates/base.html:317 records/templates/base.html:337
+msgid "English"
+msgstr "Английский"
+
+#: records/templates/base.html:351
+msgid "Notifications"
+msgstr "Уведомления"
+
+#: records/templates/base.html:355
+msgid "unread notifications"
+msgstr "непрочитанных уведомлений"
+
+#: records/templates/base.html:364
+msgid "Logout"
+msgstr "Выйти"
+
+#: records/templates/base.html:371
+msgid "Login"
+msgstr "Войти"
+
+#: records/templates/base.html:376
+msgid "Sign Up"
+msgstr "Регистрация"
+
+#: records/templates/records/profile.html:8
+msgid "User Profile"
+msgstr "Профиль пользователя"
+
+#: records/templates/records/profile.html:11
+msgid "User Information"
+msgstr "Информация о пользователе"
+
+#: records/templates/records/profile.html:12
+msgid "Username"
+msgstr "Имя пользователя"
+
+#: records/templates/records/profile.html:13
+msgid "Email"
+msgstr "Email"
+
+#: records/templates/records/profile.html:14
+msgid "Status"
+msgstr "Статус"
+
+#: records/templates/records/profile.html:16
+msgid "Administrator"
+msgstr "Администратор"
+
+#: records/templates/records/profile.html:18
+msgid "User"
+msgstr "Пользователь"
+
+#: records/templates/records/profile.html:27
+msgid "Administrative Functions"
+msgstr "Административные функции"
+
+#: records/templates/records/profile.html:28
+msgid "Go to Admin Panel"
+msgstr "Перейти в панель администратора"
+
+#: records/templates/records/profile.html:36
+#, fuzzy
+#| msgid "Documents"
+msgid "Your Documents"
+msgstr "Ваши документы"
+
+#: records/templates/records/profile.html:38
+msgid "Table View"
+msgstr "Табличный вид"
+
+#: records/templates/records/profile.html:41
+msgid "Grid View"
+msgstr "Вид сеткой"
+
+#: records/templates/records/profile.html:57
+#, fuzzy
+#| msgid "Documents"
+msgid "Document Name"
+msgstr "Название документа"
+
+#: records/templates/records/profile.html:58
+#, fuzzy
+#| msgid "Documents"
+msgid "Document Type"
+msgstr "Тип документа"
+
+#: records/templates/records/profile.html:59
+msgid "Issue Date"
+msgstr "Дата выдачи"
+
+#: records/templates/records/profile.html:60
+msgid "Expiry Date"
+msgstr "Срок действия"
+
+#: records/templates/records/profile.html:61
+#, fuzzy
+#| msgid "Notifications"
+msgid "Actions"
+msgstr "Действия"
+
+#: records/templates/records/profile.html:70
+#: records/templates/records/profile.html:111
+msgid "Not specified"
+msgstr "Не указан"
+
+#: records/templates/records/profile.html:76
+#: records/templates/records/profile.html:118
+msgid "Download"
+msgstr "Скачать"
+
+#: records/templates/records/profile.html:82
+#: records/templates/records/profile.html:124
+msgid "Edit"
+msgstr "Редактировать"
+
+#: records/templates/records/profile.html:88
+#: records/templates/records/profile.html:130
+msgid "Delete"
+msgstr "Удалить"
+
+#: records/templates/records/profile.html:110
+msgid "Issued"
+msgstr "Выдан"
+
+#: records/templates/records/profile.html:111
+msgid "Expiry"
+msgstr "Срок"
+
+#: records/templates/records/profile.html:140
+msgid "You don't have any documents yet."
+msgstr "У вас пока нет документов."
+
+#~ msgid "Language"
+#~ msgstr "Язык"

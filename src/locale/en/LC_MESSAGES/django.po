@@ -1,0 +1,109 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-04-29 13:16+0000\n"
+"PO-Revision-Date: 2024-03-19 12:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: records/templates/base.html:14
+msgid "Document Management System"
+msgstr ""
+
+#: records/templates/base.html:281
+msgid "Documents"
+msgstr "Documents"
+
+#: records/templates/base.html:291
+msgid "Profile"
+msgstr "Profile"
+
+#: records/templates/base.html:296
+msgid "Add Document"
+msgstr "Add Document"
+
+#: records/templates/base.html:302
+msgid "Admin Panel"
+msgstr "Admin Panel"
+
+#: records/templates/base.html:315 records/templates/base.html:327
+msgid "Russian"
+msgstr "Russian"
+
+#: records/templates/base.html:317 records/templates/base.html:337
+msgid "English"
+msgstr "English"
+
+#: records/templates/base.html:351
+msgid "Notifications"
+msgstr "Notifications"
+
+#: records/templates/base.html:355
+msgid "unread notifications"
+msgstr "unread notifications"
+
+#: records/templates/base.html:364
+msgid "Logout"
+msgstr "Logout"
+
+#: records/templates/base.html:371
+msgid "Login"
+msgstr "Login"
+
+#: records/templates/base.html:376
+msgid "Sign Up"
+msgstr "Sign Up"
+
+#~ msgid "Language"
+#~ msgstr "Language"
+
+#~ msgid "Документы"
+#~ msgstr "Documents"
+
+#~ msgid "Профиль"
+#~ msgstr "Profile"
+
+#~ msgid "Добавить документ"
+#~ msgstr "Add Document"
+
+#~ msgid "Панель администратора"
+#~ msgstr "Admin Panel"
+
+#~ msgid "Уведомления"
+#~ msgstr "Notifications"
+
+#~ msgid "Выйти"
+#~ msgstr "Logout"
+
+#~ msgid "Войти"
+#~ msgstr "Login"
+
+#~ msgid "Регистрация"
+#~ msgstr "Sign Up"
+
+#~ msgid "Система управления документами"
+#~ msgstr "Document Management System"
+
+#~ msgid "Вход в систему"
+#~ msgstr "Login to System"
+
+#~ msgid "Имя пользователя"
+#~ msgstr "Username"
+
+#~ msgid "Пароль"
+#~ msgstr "Password"
+
+#~ msgid "Пожалуйста, проверьте правильность данных."
+#~ msgstr "Please check your credentials."
+
+#~ msgid "Нет аккаунта?"
+#~ msgstr "Don't have an account?"
+
+#~ msgid "Зарегистрируйтесь"
+#~ msgstr "Sign Up"

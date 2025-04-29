@@ -1,0 +1,159 @@
+:root {
+    /* Light theme variables */
+    --background-color: #ffffff;
+    --text-color: #333333;
+    --container-bg: #ffffff;
+    --container-shadow: rgba(0, 0, 0, 0.1);
+    --input-bg: #ffffff;
+    --input-border: #cccccc;
+    --input-text: #333333;
+    --button-bg: #007bff;
+    --button-hover: #0056b3;
+    --link-color: #007bff;
+    --alert-bg: #ffdddd;
+    --alert-text: #ff0000;
+    --theme-switch-color: #333333;
+}
+
+[data-theme="dark"] {
+    /* Dark theme variables */
+    --background-color: #121212;
+    --text-color: #ffffff;
+    --container-bg: #2d2d2d;
+    --container-shadow: rgba(0, 0, 0, 0.3);
+    --input-bg: #1e1e1e;
+    --input-border: #404040;
+    --input-text: #ffffff;
+    --button-bg: #f44336;
+    --button-hover: #ba000d;
+    --link-color: #ff7961;
+    --alert-bg: rgba(255, 0, 0, 0.1);
+    --alert-text: #ff6b6b;
+    --theme-switch-color: #ffffff;
+}
+
+/* Общие стили */
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Контейнер для форм */
+.auth-container {
+    background: var(--container-bg);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px var(--container-shadow);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+/* Заголовок */
+.auth-container h2 {
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+/* Поля ввода */
+.auth-container input,
+.auth-container .form-control {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid var(--input-border);
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.auth-container input::placeholder,
+.auth-container .form-control::placeholder {
+    color: var(--text-color);
+    opacity: 0.7;
+}
+
+/* Кнопка */
+.auth-container button,
+.auth-container .btn-primary {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--button-bg);
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.auth-container button:hover,
+.auth-container .btn-primary:hover {
+    background-color: var(--button-hover);
+}
+
+/* Ошибки формы */
+.alert,
+.alert-danger {
+    background: var(--alert-bg);
+    color: var(--alert-text);
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    border: 1px solid var(--alert-text);
+}
+
+/* Ссылки */
+.auth-container a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+.auth-container a:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+}
+
+/* Переключатель темы */
+.theme-switch-wrapper {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
+
+.theme-switch {
+    background: none;
+    border: none;
+    color: var(--theme-switch-color);
+    cursor: pointer;
+    padding: 10px;
+    font-size: 1.2rem;
+    transition: color 0.3s;
+}
+
+.theme-switch:hover {
+    opacity: 0.8;
+}
+
+/* Текст */
+p {
+    color: var(--text-color);
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 480px) {
+    .auth-container {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+}

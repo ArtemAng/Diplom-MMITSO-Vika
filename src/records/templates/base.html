@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ru" data-theme="light">
+{% load i18n %}
+<html lang="{{ LANGUAGE_CODE }}" data-theme="light">
 <head>
     <script>
         // Применяем тему до загрузки контента
@@ -10,7 +11,7 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Система управления документами{% endblock %}</title>
+    <title>{% block title %}{% trans "Document Management System" %}{% endblock %}</title>
     
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -277,7 +278,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="{% url 'home' %}">
-                <i class="fas fa-file-alt me-2"></i>Документы
+                <i class="fas fa-file-alt me-2"></i>{% trans "Documents" %}
             </a>
             <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarNav">
                 <i class="fas fa-bars"></i>
@@ -287,24 +288,58 @@
                     {% if user.is_authenticated %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'profile' %}">
-                                <i class="fas fa-user me-1"></i>Профиль
+                                <i class="fas fa-user me-1"></i>{% trans "Profile" %}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'add_document' %}">
-                                <i class="fas fa-plus me-1"></i>Добавить документ
+                                <i class="fas fa-plus me-1"></i>{% trans "Add Document" %}
                             </a>
                         </li>
                         {% if user.is_authenticated and user.is_staff %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'admin_dashboard' %}">
-                                    <i class="fas fa-cog me-1"></i>Панель администратора
+                                    <i class="fas fa-cog me-1"></i>{% trans "Admin Panel" %}
                                 </a>
                             </li>
                         {% endif %}
                     {% endif %}
                 </ul>
                 <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <button class="nav-link dropdown-toggle" type="button" id="languageDropdown" 
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-globe me-1"></i>
+                            {% get_current_language as CURRENT_LANGUAGE %}
+                            {% if CURRENT_LANGUAGE == 'ru' %}
+                                {% trans "Russian" %}
+                            {% else %}
+                                {% trans "English" %}
+                            {% endif %}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                            <li>
+                                <form action="{% url 'set_language' %}" method="post" class="px-2">
+                                    {% csrf_token %}
+                                    <input name="next" type="hidden" value="{{ request.path }}">
+                                    <input type="hidden" name="language" value="ru">
+                                    <button type="submit" class="dropdown-item {% if CURRENT_LANGUAGE == 'ru' %}active{% endif %}">
+                                        {% trans "Russian" %}
+                                    </button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="{% url 'set_language' %}" method="post" class="px-2">
+                                    {% csrf_token %}
+                                    <input name="next" type="hidden" value="{{ request.path }}">
+                                    <input type="hidden" name="language" value="en">
+                                    <button type="submit" class="dropdown-item {% if CURRENT_LANGUAGE == 'en' %}active{% endif %}">
+                                        {% trans "English" %}
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="nav-item">
                         <button class="theme-switch nav-link" id="themeSwitch">
                             <i class="fas fa-sun"></i>
@@ -313,11 +348,11 @@
                     {% if user.is_authenticated %}
                         <li class="nav-item">
                             <a class="nav-link position-relative" href="{% url 'notifications' %}">
-                                <i class="fas fa-bell me-1"></i>Уведомления
+                                <i class="fas fa-bell me-1"></i>{% trans "Notifications" %}
                                 {% if user.unread_notifications_count > 0 %}
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                         {{ user.unread_notifications_count }}
-                                        <span class="visually-hidden">непрочитанных уведомлений</span>
+                                        <span class="visually-hidden">{% trans "unread notifications" %}</span>
                                     </span>
                                 {% endif %}
                             </a>
@@ -326,19 +361,19 @@
                             <form method="post" action="{% url 'logout' %}" class="d-inline">
                                 {% csrf_token %}
                                 <button type="submit" class="nav-link btn btn-link">
-                                    <i class="fas fa-sign-out-alt me-1"></i>Выйти
+                                    <i class="fas fa-sign-out-alt me-1"></i>{% trans "Logout" %}
                                 </button>
                             </form>
                         </li>
                     {% else %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'login' %}">
-                                <i class="fas fa-sign-in-alt me-1"></i>Войти
+                                <i class="fas fa-sign-in-alt me-1"></i>{% trans "Login" %}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'signup' %}">
-                                <i class="fas fa-user-plus me-1"></i>Регистрация
+                                <i class="fas fa-user-plus me-1"></i>{% trans "Sign Up" %}
                             </a>
                         </li>
                     {% endif %}
@@ -393,6 +428,12 @@
                 });
                 toast.show();
                 return toast;
+            });
+
+            // Initialize dropdowns
+            var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
+            var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+                return new bootstrap.Dropdown(dropdownToggleEl);
             });
 
             // Theme switching functionality
