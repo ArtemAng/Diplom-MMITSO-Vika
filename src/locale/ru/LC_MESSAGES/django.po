@@ -465,3 +465,36 @@ msgstr "Введите название типа документа"
 
 msgid "A document type with this name already exists"
 msgstr "Тип документа с таким названием уже существует"
+
+msgid "Back to Profile"
+msgstr "Назад к профилю"
+
+msgid "Document Management"
+msgstr "Управление документами"
+
+msgid "Document Owner"
+msgstr "Владелец документа"
+
+msgid "Filter by Document Type"
+msgstr "Фильтр по типу документа"
+
+msgid "Filter by Status"
+msgstr "Фильтр по статусу"
+
+msgid "Sort by"
+msgstr "Сортировать по"
+
+msgid "Uploaded by"
+msgstr "Загружено пользователем"
+
+msgid "days left"
+msgstr "дней осталось"
+
+msgid "day left"
+msgstr "день остался"
+
+msgid "days ago"
+msgstr "дней назад"
+
+msgid "day ago"
+msgstr "день назад"
