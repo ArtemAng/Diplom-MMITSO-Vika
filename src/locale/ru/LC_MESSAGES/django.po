@@ -76,10 +76,12 @@ msgid "User Information"
 msgstr "Информация о пользователе"
 
 #: records/templates/records/profile.html:12
+#: records/templates/records/admin_users.html:81
 msgid "Username"
 msgstr "Имя пользователя"
 
 #: records/templates/records/profile.html:13
+#: records/templates/records/admin_users.html:82
 msgid "Email"
 msgstr "Email"
 
@@ -116,14 +118,10 @@ msgid "Grid View"
 msgstr "Вид сеткой"
 
 #: records/templates/records/profile.html:57
-#, fuzzy
-#| msgid "Documents"
 msgid "Document Name"
 msgstr "Название документа"
 
 #: records/templates/records/profile.html:58
-#, fuzzy
-#| msgid "Documents"
 msgid "Document Type"
 msgstr "Тип документа"
 
@@ -136,8 +134,7 @@ msgid "Expiry Date"
 msgstr "Срок действия"
 
 #: records/templates/records/profile.html:61
-#, fuzzy
-#| msgid "Notifications"
+#: records/templates/records/admin_users.html:87
 msgid "Actions"
 msgstr "Действия"
 
@@ -182,6 +179,7 @@ msgid "Administrator Panel"
 msgstr "Панель администратора"
 
 #: records/templates/records/admin_dashboard.html:20
+#: records/templates/records/admin_users.html:4
 msgid "User Management"
 msgstr "Управление пользователями"
 
@@ -220,5 +218,82 @@ msgstr "Управление типами документов в системе
 msgid "Go"
 msgstr "Перейти"
 
-#~ msgid "Language"
-#~ msgstr "Язык"
+#: records/templates/records/admin_users.html:14
+msgid "Back to Panel"
+msgstr "Назад к панели"
+
+#: records/templates/records/admin_users.html:29
+msgid "Search by name, email or username..."
+msgstr "Поиск по имени, email или имени пользователя..."
+
+#: records/templates/records/admin_users.html:43
+msgid "All roles"
+msgstr "Все роли"
+
+#: records/templates/records/admin_users.html:44
+msgid "Administrators"
+msgstr "Администраторы"
+
+#: records/templates/records/admin_users.html:45
+msgid "Users"
+msgstr "Пользователи"
+
+#: records/templates/records/admin_users.html:50
+msgid "Sort by"
+msgstr "Сортировка"
+
+#: records/templates/records/admin_users.html:52
+msgid "Newest first"
+msgstr "Сначала новые"
+
+#: records/templates/records/admin_users.html:53
+msgid "Oldest first"
+msgstr "Сначала старые"
+
+#: records/templates/records/admin_users.html:54
+msgid "Username (A-Z)"
+msgstr "По имени пользователя (А-Я)"
+
+#: records/templates/records/admin_users.html:55
+msgid "Username (Z-A)"
+msgstr "По имени пользователя (Я-А)"
+
+#: records/templates/records/admin_users.html:56
+msgid "Email (A-Z)"
+msgstr "По email (А-Я)"
+
+#: records/templates/records/admin_users.html:57
+msgid "Email (Z-A)"
+msgstr "По email (Я-А)"
+
+#: records/templates/records/admin_users.html:63
+msgid "Apply filters"
+msgstr "Применить фильтры"
+
+#: records/templates/records/admin_users.html:83
+msgid "First Name"
+msgstr "Имя"
+
+#: records/templates/records/admin_users.html:84
+msgid "Last Name"
+msgstr "Фамилия"
+
+#: records/templates/records/admin_users.html:85
+msgid "Role"
+msgstr "Роль"
+
+#: records/templates/records/admin_users.html:86
+msgid "Registration Date"
+msgstr "Дата регистрации"
+
+#: records/templates/records/admin_users.html:108
+msgid "Revoke administrator rights"
+msgstr "Отозвать права администратора"
+
+#: records/templates/records/admin_users.html:108
+msgid "Make administrator"
+msgstr "Назначить администратором"
+
+#: records/templates/records/admin_users.html:138
+msgid "No users found"
+msgstr "Пользователи не найдены"

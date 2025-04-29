@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Управление пользователями{% endblock %}
+{% block title %}{% trans "User Management" %}{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
@@ -9,9 +10,9 @@
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h2 class="card-title mb-0">Управление пользователями</h2>
+                        <h2 class="card-title mb-0">{% trans "User Management" %}</h2>
                         <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left me-2"></i>Назад к панели
+                            <i class="fas fa-arrow-left me-2"></i>{% trans "Back to Panel" %}
                         </a>
                     </div>
                 </div>
@@ -25,7 +26,7 @@
                         <div class="col-md-12 mb-3">
                             <div class="input-group">
                                 <input type="text" name="search" class="form-control" 
-                                       placeholder="Поиск по имени, email или имени пользователя..." 
+                                       placeholder="{% trans 'Search by name, email or username...' %}" 
                                        value="{{ search_query }}">
                                 <button class="btn btn-outline-secondary" type="submit">
                                     <i class="fas fa-search"></i>
@@ -40,29 +41,29 @@
 
                         <!-- Фильтры -->
                         <div class="col-md-4">
-                            <label for="roleFilter" class="form-label">Роль</label>
+                            <label for="roleFilter" class="form-label">{% trans "Role" %}</label>
                             <select name="role" id="roleFilter" class="form-select">
-                                <option value="">Все роли</option>
-                                <option value="admin" {% if current_role == 'admin' %}selected{% endif %}>Администраторы</option>
-                                <option value="user" {% if current_role == 'user' %}selected{% endif %}>Пользователи</option>
+                                <option value="">{% trans "All roles" %}</option>
+                                <option value="admin" {% if current_role == 'admin' %}selected{% endif %}>{% trans "Administrators" %}</option>
+                                <option value="user" {% if current_role == 'user' %}selected{% endif %}>{% trans "Users" %}</option>
                             </select>
                         </div>
 
                         <div class="col-md-4">
-                            <label for="sortFilter" class="form-label">Сортировка</label>
+                            <label for="sortFilter" class="form-label">{% trans "Sort by" %}</label>
                             <select name="sort" id="sortFilter" class="form-select">
-                                <option value="-date_joined" {% if current_sort == '-date_joined' %}selected{% endif %}>Сначала новые</option>
-                                <option value="date_joined" {% if current_sort == 'date_joined' %}selected{% endif %}>Сначала старые</option>
-                                <option value="username" {% if current_sort == 'username' %}selected{% endif %}>По имени пользователя (А-Я)</option>
-                                <option value="-username" {% if current_sort == '-username' %}selected{% endif %}>По имени пользователя (Я-А)</option>
-                                <option value="email" {% if current_sort == 'email' %}selected{% endif %}>По email (А-Я)</option>
-                                <option value="-email" {% if current_sort == '-email' %}selected{% endif %}>По email (Я-А)</option>
+                                <option value="-date_joined" {% if current_sort == '-date_joined' %}selected{% endif %}>{% trans "Newest first" %}</option>
+                                <option value="date_joined" {% if current_sort == 'date_joined' %}selected{% endif %}>{% trans "Oldest first" %}</option>
+                                <option value="username" {% if current_sort == 'username' %}selected{% endif %}>{% trans "Username (A-Z)" %}</option>
+                                <option value="-username" {% if current_sort == '-username' %}selected{% endif %}>{% trans "Username (Z-A)" %}</option>
+                                <option value="email" {% if current_sort == 'email' %}selected{% endif %}>{% trans "Email (A-Z)" %}</option>
+                                <option value="-email" {% if current_sort == '-email' %}selected{% endif %}>{% trans "Email (Z-A)" %}</option>
                             </select>
                         </div>
 
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-filter me-2"></i>Применить фильтры
+                                <i class="fas fa-filter me-2"></i>{% trans "Apply filters" %}
                             </button>
                         </div>
                     </form>
@@ -77,13 +78,13 @@
                             <table class="table table-hover shadow-sm">
                                 <thead class="bg-light">
                                     <tr>
-                                        <th class="fw-medium text-secondary">Имя пользователя</th>
-                                        <th class="fw-medium text-secondary">Email</th>
-                                        <th class="fw-medium text-secondary">Имя</th>
-                                        <th class="fw-medium text-secondary">Фамилия</th>
-                                        <th class="fw-medium text-secondary">Роль</th>
-                                        <th class="fw-medium text-secondary">Дата регистрации</th>
-                                        <th class="fw-medium text-secondary">Действия</th>
+                                        <th class="fw-medium text-secondary">{% trans "Username" %}</th>
+                                        <th class="fw-medium text-secondary">{% trans "Email" %}</th>
+                                        <th class="fw-medium text-secondary">{% trans "First Name" %}</th>
+                                        <th class="fw-medium text-secondary">{% trans "Last Name" %}</th>
+                                        <th class="fw-medium text-secondary">{% trans "Role" %}</th>
+                                        <th class="fw-medium text-secondary">{% trans "Registration Date" %}</th>
+                                        <th class="fw-medium text-secondary">{% trans "Actions" %}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -95,9 +96,9 @@
                                         <td>{{ user.last_name }}</td>
                                         <td>
                                             {% if user.is_staff %}
-                                                <span class="badge bg-primary">Администратор</span>
+                                                <span class="badge bg-primary">{% trans "Administrator" %}</span>
                                             {% else %}
-                                                <span class="badge bg-secondary">Пользователь</span>
+                                                <span class="badge bg-secondary">{% trans "User" %}</span>
                                             {% endif %}
                                         </td>
                                         <td>{{ user.date_joined|date:"d.m.Y H:i" }}</td>
@@ -108,14 +109,14 @@
                                                     <button type="submit" 
                                                             class="btn btn-sm {% if user.is_staff %}btn-warning{% else %}btn-success{% endif %} rounded"
                                                             style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;"
-                                                            title="{% if user.is_staff %}Отозвать права администратора{% else %}Назначить администратором{% endif %}">
+                                                            title="{% if user.is_staff %}{% trans 'Revoke administrator rights' %}{% else %}{% trans 'Make administrator' %}{% endif %}">
                                                         <i class="fas {% if user.is_staff %}fa-user-minus{% else %}fa-user-shield{% endif %}"></i>
                                                     </button>
                                                 </form>
                                                 <a href="{% url 'admin_delete_user' user.id %}"
                                                    class="btn btn-sm btn-danger rounded"
                                                    style="width: 32px; height: 32px; padding: 0; margin-left: 5px; display: flex; align-items: center; justify-content: center;"
-                                                   title="Удалить">
+                                                   title="{% trans 'Delete' %}">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </div>
@@ -127,7 +128,7 @@
                             {% include 'records/includes/pagination.html' with page_obj=users %}
                         </div>
                     {% else %}
-                        <p class="text-center mb-0">Пользователи не найдены</p>
+                        <p class="text-center mb-0">{% trans "No users found" %}</p>
                     {% endif %}
                 </div>
             </div>
