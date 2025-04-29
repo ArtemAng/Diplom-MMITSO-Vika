@@ -392,3 +392,76 @@ msgstr "Отметить как прочитанное"
 
 msgid "No notifications found"
 msgstr "Уведомления не найдены"
+
+msgid "Document Types Management"
+msgstr "Управление типами документов"
+
+msgid "Add New Document Type"
+msgstr "Добавить новый тип документа"
+
+msgid "Add"
+msgstr "Добавить"
+
+msgid "Search by name..."
+msgstr "Поиск по названию..."
+
+msgid "By name (A-Z)"
+msgstr "По названию (А-Я)"
+
+msgid "By name (Z-A)"
+msgstr "По названию (Я-А)"
+
+msgid "Name"
+msgstr "Название"
+
+msgid "Documents Count"
+msgstr "Количество документов"
+
+msgid "No document types found"
+msgstr "Типы документов не найдены"
+
+msgid "Edit Document Type"
+msgstr "Редактирование типа документа"
+
+msgid "Back to List"
+msgstr "Назад к списку"
+
+msgid "Document Type Name"
+msgstr "Название типа документа"
+
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+msgid "Confirm Document Type Deletion"
+msgstr "Подтверждение удаления типа документа"
+
+msgid "Confirm Deletion"
+msgstr "Подтверждение удаления"
+
+msgid "Warning!"
+msgstr "Внимание!"
+
+msgid "You are about to delete document type"
+msgstr "Вы собираетесь удалить тип документа"
+
+msgid "This type is associated with %(counter)d document. All associated documents will be left without a type!"
+msgid_plural "This type is associated with %(counter)d documents. All associated documents will be left without a type!"
+msgstr[0] "С этим типом связан %(counter)d документ. При удалении типа все связанные документы останутся без типа!"
+msgstr[1] "С этим типом связано %(counter)d документа. При удалении типа все связанные документы останутся без типа!"
+msgstr[2] "С этим типом связано %(counter)d документов. При удалении типа все связанные документы останутся без типа!"
+msgstr[3] "С этим типом связано %(counter)d документов. При удалении типа все связанные документы останутся без типа!"
+
+msgid "This action cannot be undone!"
+msgstr "Это действие нельзя отменить!"
+
+msgid "Delete Document Type"
+msgstr "Удалить тип документа"
+
+msgid "Cancel"
+msgstr "Отмена"
+
+msgid "Enter document type name"
+msgstr "Введите название типа документа"
+
+msgid "A document type with this name already exists"
+msgstr "Тип документа с таким названием уже существует"

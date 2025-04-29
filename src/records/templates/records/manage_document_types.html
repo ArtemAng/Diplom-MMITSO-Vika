@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Управление типами документов{% endblock %}
+{% block title %}{% trans "Document Types Management" %}{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
@@ -9,9 +10,9 @@
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h2 class="card-title mb-0">Управление типами документов</h2>
+                        <h2 class="card-title mb-0">{% trans "Document Types Management" %}</h2>
                         <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left me-2"></i>Назад к панели
+                            <i class="fas fa-arrow-left me-2"></i>{% trans "Back to Panel" %}
                         </a>
                     </div>
                 </div>
@@ -20,7 +21,7 @@
             <!-- Форма добавления -->
             <div class="card mb-4">
                 <div class="card-body">
-                    <h5 class="card-title">Добавить новый тип документа</h5>
+                    <h5 class="card-title">{% trans "Add New Document Type" %}</h5>
                     <form method="post" class="row g-3" novalidate>
                         {% csrf_token %}
                         <div class="col-md-9">
@@ -35,7 +36,7 @@
                         </div>
                         <div class="col-md-3">
                             <button type="submit" class="btn btn-primary w-100">
-                                <i class="fas fa-plus me-2"></i>Добавить
+                                <i class="fas fa-plus me-2"></i>{% trans "Add" %}
                             </button>
                         </div>
                     </form>
@@ -48,7 +49,7 @@
                     <form method="get" class="row g-3">
                         <div class="col-md-8">
                             <div class="input-group">
-                                <input type="text" name="search" class="form-control" placeholder="Поиск по названию..." value="{{ search_query }}">
+                                <input type="text" name="search" class="form-control" placeholder="{% trans 'Search by name...' %}" value="{{ search_query }}">
                                 <button class="btn btn-outline-secondary" type="submit">
                                     <i class="fas fa-search"></i>
                                 </button>
@@ -61,8 +62,8 @@
                         </div>
                         <div class="col-md-4">
                             <select name="sort" class="form-select" onchange="this.form.submit()">
-                                <option value="name" {% if current_sort == 'name' %}selected{% endif %}>По названию (А-Я)</option>
-                                <option value="-name" {% if current_sort == '-name' %}selected{% endif %}>По названию (Я-А)</option>
+                                <option value="name" {% if current_sort == 'name' %}selected{% endif %}>{% trans "By name (A-Z)" %}</option>
+                                <option value="-name" {% if current_sort == '-name' %}selected{% endif %}>{% trans "By name (Z-A)" %}</option>
                             </select>
                         </div>
                     </form>
@@ -78,9 +79,9 @@
                                 <thead class="bg-light">
                                     <tr>
                                         <th class="fw-medium text-secondary">ID</th>
-                                        <th class="fw-medium text-secondary">Название</th>
-                                        <th class="fw-medium text-secondary">Количество документов</th>
-                                        <th class="fw-medium text-secondary">Действия</th>
+                                        <th class="fw-medium text-secondary">{% trans "Name" %}</th>
+                                        <th class="fw-medium text-secondary">{% trans "Documents Count" %}</th>
+                                        <th class="fw-medium text-secondary">{% trans "Actions" %}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -94,13 +95,13 @@
                                                 <a href="{% url 'edit_document_type' doc_type.id %}"
                                                    class="btn btn-sm btn-warning rounded"
                                                    style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;"
-                                                   title="Редактировать">
+                                                   title="{% trans 'Edit' %}">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
                                                 <a href="{% url 'delete_document_type' doc_type.id %}"
                                                    class="btn btn-sm btn-danger rounded"
                                                    style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;"
-                                                   title="Удалить">
+                                                   title="{% trans 'Delete' %}">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </div>
@@ -112,7 +113,7 @@
                             {% include 'records/includes/pagination.html' with page_obj=document_types %}
                         </div>
                     {% else %}
-                        <p class="text-center mb-0">Типы документов не найдены</p>
+                        <p class="text-center mb-0">{% trans "No document types found" %}</p>
                     {% endif %}
                 </div>
             </div>

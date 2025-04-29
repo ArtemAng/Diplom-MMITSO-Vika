@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Подтверждение удаления типа документа{% endblock %}
+{% block title %}{% trans "Confirm Document Type Deletion" %}{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
@@ -9,35 +10,39 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h2 class="card-title mb-0">Подтверждение удаления</h2>
+                        <h2 class="card-title mb-0">{% trans "Confirm Deletion" %}</h2>
                         <a href="{% url 'manage_document_types' %}" class="btn btn-outline-secondary">
-                            <i class="fas fa-arrow-left me-2"></i>Назад к списку
+                            <i class="fas fa-arrow-left me-2"></i>{% trans "Back to List" %}
                         </a>
                     </div>
 
                     <div class="alert alert-warning">
-                        <h4 class="alert-heading">Внимание!</h4>
-                        <p>Вы собираетесь удалить тип документа "{{ document_type.name }}".</p>
+                        <h4 class="alert-heading">{% trans "Warning!" %}</h4>
+                        <p>{% trans "You are about to delete document type" %} "{{ document_type.name }}".</p>
                         
                         {% if documents_count > 0 %}
                             <hr>
                             <p class="mb-0 text-danger">
                                 <i class="fas fa-exclamation-triangle me-2"></i>
-                                С этим типом связано {{ documents_count }} документ(ов). При удалении типа все связанные документы останутся без типа!
+                                {% blocktrans count counter=documents_count %}
+                                    This type is associated with {{ counter }} document. All associated documents will be left without a type!
+                                {% plural %}
+                                    This type is associated with {{ counter }} documents. All associated documents will be left without a type!
+                                {% endblocktrans %}
                             </p>
                         {% endif %}
                     </div>
 
-                    <p class="text-danger text-center">Это действие нельзя отменить!</p>
+                    <p class="text-danger text-center">{% trans "This action cannot be undone!" %}</p>
 
                     <form method="post" class="mt-4">
                         {% csrf_token %}
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-danger">
-                                <i class="fas fa-trash me-2"></i>Удалить тип документа
+                                <i class="fas fa-trash me-2"></i>{% trans "Delete Document Type" %}
                             </button>
                             <a href="{% url 'manage_document_types' %}" class="btn btn-secondary">
-                                <i class="fas fa-times me-2"></i>Отмена
+                                <i class="fas fa-times me-2"></i>{% trans "Cancel" %}
                             </a>
                         </div>
                     </form>

@@ -4,6 +4,7 @@ from django import forms
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 import re
+from django.utils.translation import gettext_lazy as _
 
 class LoginForm(forms.Form):
     username = forms.CharField(
@@ -181,12 +182,12 @@ class DocumentTypeForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Введите название типа документа'
+                'placeholder': _('Enter document type name')
             })
         }
 
     def clean_name(self):
         name = self.cleaned_data['name']
         if DocumentType.objects.filter(name__iexact=name).exclude(id=self.instance.id).exists():
-            raise forms.ValidationError('Тип документа с таким названием уже существует')
+            raise forms.ValidationError(_('A document type with this name already exists'))
         return name 
