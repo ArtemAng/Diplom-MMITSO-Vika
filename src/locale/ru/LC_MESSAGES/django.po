@@ -104,8 +104,6 @@ msgid "Go to Admin Panel"
 msgstr "Перейти в панель администратора"
 
 #: records/templates/records/profile.html:36
-#, fuzzy
-#| msgid "Documents"
 msgid "Your Documents"
 msgstr "Ваши документы"
 
@@ -174,6 +172,53 @@ msgstr "Срок"
 #: records/templates/records/profile.html:140
 msgid "You don't have any documents yet."
 msgstr "У вас пока нет документов."
+
+#: records/templates/records/admin_dashboard.html:4
+msgid "Admin Dashboard"
+msgstr "Панель администратора"
+
+#: records/templates/records/admin_dashboard.html:11
+msgid "Administrator Panel"
+msgstr "Панель администратора"
+
+#: records/templates/records/admin_dashboard.html:20
+msgid "User Management"
+msgstr "Управление пользователями"
+
+#: records/templates/records/admin_dashboard.html:21
+msgid "Manage system users, their roles and permissions."
+msgstr "Управление пользователями системы, их ролями и правами."
+
+#: records/templates/records/admin_dashboard.html:29
+msgid "Document Management"
+msgstr "Управление документами"
+
+#: records/templates/records/admin_dashboard.html:30
+msgid "View and manage all documents in the system."
+msgstr "Просмотр и управление всеми документами в системе."
+
+#: records/templates/records/admin_dashboard.html:38
+msgid "Notification Management"
+msgstr "Управление уведомлениями"
+
+#: records/templates/records/admin_dashboard.html:40
+msgid "View and manage user notifications"
+msgstr "Просмотр и управление уведомлениями пользователей"
+
+#: records/templates/records/admin_dashboard.html:49
+msgid "Document Types"
+msgstr "Типы документов"
+
+#: records/templates/records/admin_dashboard.html:51
+msgid "Manage document types in the system"
+msgstr "Управление типами документов в системе"
+
+#: records/templates/records/admin_dashboard.html:24
+#: records/templates/records/admin_dashboard.html:33
+#: records/templates/records/admin_dashboard.html:42
+#: records/templates/records/admin_dashboard.html:53
+msgid "Go"
+msgstr "Перейти"
 
 #~ msgid "Language"
 #~ msgstr "Язык"
